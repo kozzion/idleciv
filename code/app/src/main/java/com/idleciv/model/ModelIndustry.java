@@ -1,7 +1,5 @@
 package com.idleciv.model;
 
-import android.content.Context;
-
 import java.util.HashSet;
 
 /**
@@ -18,7 +16,9 @@ public class ModelIndustry {
 
     public double mStock;
     public int mProgress;
-    private HashSet<Listener> mListenerSet;
+
+
+    private transient  HashSet<Listener> mListenerSet;
 
     public ModelIndustry(String industryType)
     {
@@ -29,14 +29,8 @@ public class ModelIndustry {
         mCapital = 0.5;
     }
 
-    public void save(Context context)
-    {
-
-    }
-
-    public void load(Context context)
-    {
-
+    public void validate() {
+        mListenerSet = new HashSet<>();
     }
 
     public void updateState(double timeElapsed)
