@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "533076176330",
+    "firebase_url": "https://idleciv.firebaseio.com",
+    "project_id": "idleciv",
+    "storage_bucket": "idleciv.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:533076176330:android:44d54f53829739a3",
+        "android_client_info": {
+          "package_name": "com.idleciv"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "533076176330-ga6n8m7m73cpq3lai3i6m40b9tt5levj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC03gH1kW3j47vGdSnu0PfYuhwYK45qlQc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

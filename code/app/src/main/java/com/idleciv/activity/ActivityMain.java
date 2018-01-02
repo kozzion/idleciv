@@ -37,7 +37,7 @@ public class ActivityMain extends AppCompatActivity {
         mIndustryList.add(new ModelIndustry("Food"));
         mIndustryList.add(new ModelIndustry("Lumber"));
         ModelIndustry ward = new ModelIndustry("Ward");
-        ward.setLabor(0.5);
+        ward.setLabor(0.6);
         mIndustryList.add(ward);
 
         updateAdapter();
