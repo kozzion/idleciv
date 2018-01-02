@@ -1,8 +1,8 @@
 package com.idleciv.adapter;
 
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -18,6 +18,9 @@ import butterknife.ButterKnife;
 
 public class HolderIndustry extends RecyclerView.ViewHolder implements ModelIndustry.Listener {
 
+
+    @BindView(R.id.item_industry_image_icon)
+    ImageView mImageIcon;
 
 
     @BindView(R.id.item_industry_text_name)
@@ -44,7 +47,6 @@ public class HolderIndustry extends RecyclerView.ViewHolder implements ModelIndu
     public void bind(ModelIndustry modelIndustry) {
         mIndustry = modelIndustry;
         mIndustry.addListener(this);
-        Log.e("bind", "bind: ");
     }
 
     public void unbind(ModelIndustry modelIndustry) {
@@ -57,6 +59,11 @@ public class HolderIndustry extends RecyclerView.ViewHolder implements ModelIndu
         mTextStock.setText(Integer.toString((int)industry.mStock));
         mTextProgress.setText(Double.toString(industry.mProgress) + " / 100");
         mProgressProgress.setProgress(industry.mProgress);
+        switch (industry.mIndustryType) {
+            case "Food": mImageIcon.setImageResource(R.drawable.wheat); break;
+            case "Lumber": mImageIcon.setImageResource(R.drawable.lumber); break;
+            default: mImageIcon.setImageResource(R.drawable.wheat); break;
+        }
 
     }
 }

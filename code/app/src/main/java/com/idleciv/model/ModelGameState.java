@@ -8,6 +8,8 @@ import java.util.ArrayList;
 
 public class ModelGameState {
 
+
+    public ModelObjective mObjective;
     public ArrayList<ModelIndustry> mIndustryList;
 
     public ModelGameState()
@@ -22,5 +24,11 @@ public class ModelGameState {
         }
     }
 
+
+
+    public void checkObjective()
+    {
+        mObjective.check(mIndustryList);
+    }
 
 }
