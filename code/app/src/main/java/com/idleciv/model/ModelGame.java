@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
@@ -48,9 +49,16 @@ public class ModelGame {
         if(gameStateJson.equals("") || gameStateJson.equals("null")) {
             mGameState = new ModelGameState();
         } else {
-            Gson gson = new Gson();
-            Type type = new TypeToken<ModelGameState>(){}.getType();
-            mGameState = gson.fromJson(gameStateJson, type);
+            try {
+                Gson gson = new Gson();
+                Type type = new TypeToken<ModelGameState>() {
+                }.getType();
+                mGameState = gson.fromJson(gameStateJson, type);
+            }
+            catch (JsonSyntaxException e)
+            {
+                mGameState = new ModelGameState();
+            }
         }
         mGameState.validate();
         updateListeners();
