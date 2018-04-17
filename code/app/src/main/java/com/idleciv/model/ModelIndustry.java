@@ -8,8 +8,8 @@ import java.util.HashSet;
 
 public class ModelIndustry {
 
-    public String mIndustryType;
-    public double mLabor;
+    public int mResourceIndex;
+    public int mLabor;
     public double mCapital;
     public double mProduction;
     public double mProductionPerUnit;
@@ -20,13 +20,13 @@ public class ModelIndustry {
 
     private transient  HashSet<Listener> mListenerSet;
 
-    public ModelIndustry(String industryType)
+    public ModelIndustry(int resourceIndex)
     {
-        mIndustryType = industryType;
+        mResourceIndex = resourceIndex;
         mListenerSet = new HashSet<>();
 
-        mLabor = 1;
-        mCapital = 0.5;
+        mLabor = 0;
+        mCapital = 1;
     }
 
     public void validate() {
@@ -37,23 +37,21 @@ public class ModelIndustry {
     {
 
         mProduction = mLabor * mCapital;
-        mStock += mProduction * timeElapsed;
 
+        mProgress += 1;
+        if(100 < mProgress)
+        {
+            mProgress -= 100;
+            mStock += mProduction;
+        }
 
-
-        mProgress = (int)((mStock - Math.floor(mStock)) * 100) ;
     }
-
-
-
 
     public void updateUI() {
         for (Listener listener: mListenerSet) {
             listener.updateIndustry(this);
         }
     }
-
-
 
     public void addListener(Listener listener) {
         mListenerSet.add(listener);
@@ -65,8 +63,10 @@ public class ModelIndustry {
         mListenerSet.remove(listener);
     }
 
-    public void setLabor(double labor) {
-        this.mLabor = labor;
+
+
+    public void clear() {
+        mListenerSet = new HashSet<>();
     }
 
 

@@ -1,45 +1,59 @@
 package com.idleciv.activity;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.idleciv.R;
-import com.idleciv.adapter.AdapterIndustry;
-import com.idleciv.model.ModelGameState;
+import com.idleciv.adapter.AdapterPage;
+import com.idleciv.common.ActivityBase;
+import com.idleciv.fragment.FragmentIndustryDetail;
+import com.idleciv.fragment.FragmentPopulation;
+import com.idleciv.fragment.FragmentProduction;
+import com.idleciv.model.ModelGame;
 import com.idleciv.model.ModelIndustry;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-public class ActivityMain extends AppCompatActivity {
+public class ActivityMain extends ActivityBase {
 
-    @BindView(R.id.main_recycler)
-    RecyclerView mRecycler;
+    @BindView(R.id.main_viewpager)
+    ViewPager mViewPager;
 
-    AdapterIndustry mAdapter;
+    AdapterPage mAdapter;
 
-    ModelGameState mGameState;
+    public ModelGame mGame;
 
+    FragmentPopulation mFragmentPopulation;
+    FragmentProduction mFragmentProduction;
+    FragmentIndustryDetail mFragmentIndustryDetail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        load();
+        mGame = new ModelGame();
 
+        mFragmentPopulation = new FragmentPopulation(mGame);
+        mFragmentProduction = new FragmentProduction(mGame);
+        mFragmentIndustryDetail = new FragmentIndustryDetail(mGame);
+        List<Fragment> fragments = new ArrayList<>();
+        fragments.add(mFragmentPopulation);
+        fragments.add(mFragmentProduction);
+        fragments.add(mFragmentIndustryDetail);
 
+        mAdapter = new AdapterPage(getSupportFragmentManager(), fragments);
+        mViewPager.setAdapter(mAdapter);
+        mViewPager.setCurrentItem(1);
+
+        mGame.load(this);
 
         new Thread(() -> {
             long time = System.currentTimeMillis();
@@ -62,82 +76,70 @@ public class ActivityMain extends AppCompatActivity {
                 });
             }
         }).start();
+
     }
 
-    private void save() {
-        Gson gson = new Gson();
-        Type type = new TypeToken<ModelGameState>() {}.getType();
-        String gameStateJson = gson.toJson(mGameState, type);
-        SharedPreferences  sharedPref = getPreferences(Context.MODE_PRIVATE);
-        SharedPreferences.Editor edit = sharedPref.edit();
-        edit.putString("GameState", gameStateJson);
-        edit.apply();
-    }
 
-    private void load() {
-        String gameStateJson = getPreferences(Context.MODE_PRIVATE).getString("GameState", "");
-        if(gameStateJson.equals("") || gameStateJson.equals("null")) {
-            mGameState = new ModelGameState();
-            mGameState.mIndustryList = new ArrayList<>();
-            mGameState.mIndustryList.add(new ModelIndustry("Food"));
-            mGameState.mIndustryList.add(new ModelIndustry("Lumber"));
-            ModelIndustry ward = new ModelIndustry("Ward");
-            ward.setLabor(0.6);
-            mGameState.mIndustryList.add(ward);
-        } else {
-            Gson gson = new Gson();
-            Type type = new TypeToken<ModelGameState>() {
-            }.getType();
-            mGameState = gson.fromJson(gameStateJson, type);
-        }
-        mGameState.validate();
-        updateAdapter();
-    }
 
 
     @Override
-    protected void onPause() {
+    public void onPause() {
         super.onPause();
-        save();
+        mGame.save(this);
     }
 
+    @Override
+    public void onBackPressed() {
+        if(mViewPager.getCurrentItem() == 1) {
+            super.onBackPressed();
+        } else {
+            mViewPager.setCurrentItem(1);
+        }
+    }
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
-        load();
+        mGame.load(this);
     }
 
 
 
     public void updateIndustry(double elapsedSeconds)
     {
-       for (ModelIndustry industry: mGameState.mIndustryList) {
+        for (ModelIndustry industry: mGame.mGameState.mIndustryList) {
             industry.updateState(elapsedSeconds);
         }
     }
 
     public void updateIndustryUI()
     {
-        for (ModelIndustry industry: mGameState.mIndustryList) {
+        for (ModelIndustry industry: mGame.mGameState.mIndustryList) {
             industry.updateUI();
+        }
+
+        if(mFragmentPopulation != null)
+        {
+            mFragmentPopulation.updateUI();
         }
     }
 
-    public void updateAdapter()
-    {
-        mAdapter.setData(mGameState.mIndustryList);
-    }
 
     @Override
     public void onContentChanged() {
         super.onContentChanged();
         ButterKnife.bind(this);
-        mAdapter = new AdapterIndustry(this);
-        mRecycler.setAdapter(mAdapter);
-        RecyclerView.LayoutManager lManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        lManager.setAutoMeasureEnabled(true);
-        mRecycler.setLayoutManager(lManager);
 
+        //FragmentManager manager = getSupportFragmentManager();
+        //FragmentTransaction transaction = manager.beginTransaction();
+        //transaction.add(R.id.fragment_container, fragment, fragmentKey);
+
+
+
+    }
+
+    public void showIndustryDetails(ModelIndustry industry) {
+        mFragmentIndustryDetail.setIndustry(industry);
+        mViewPager.setCurrentItem(2);
     }
 }
