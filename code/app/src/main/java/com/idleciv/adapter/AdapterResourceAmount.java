@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.idleciv.R;
-import com.idleciv.model.ModelIndustry;
+import com.idleciv.model.ModelResourceAmount;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,25 +17,25 @@ import java.util.List;
  * Created by jaapo on 23-12-2017.
  */
 
-public class AdapterIndustry extends RecyclerView.Adapter<HolderIndustry> {
+public class AdapterResourceAmount extends RecyclerView.Adapter<HolderResourceAmount> {
 
     private static final int TYPE_ITEM = 0;
 
-    private List<ModelIndustry> data;
+    private List<ModelResourceAmount> data;
 
-    public AdapterIndustry(@NonNull Context context) {
+    public AdapterResourceAmount(@NonNull Context context) {
         this.data = new ArrayList<>();
     }
 
     @Override
-    public HolderIndustry onCreateViewHolder(ViewGroup parent, int viewType) {
+    public HolderResourceAmount onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View item = inflater.inflate(R.layout.item_industry, parent, false);
-        return new HolderIndustry(item);
+        View item = inflater.inflate(R.layout.item_resource_amount_cost, parent, false);
+        return new HolderResourceAmount(item);
     }
 
     @Override
-    public void onBindViewHolder(HolderIndustry holder, int position) {
+    public void onBindViewHolder(HolderResourceAmount holder, int position) {
         holder.bind(data.get(position));
     }
 
@@ -50,7 +50,7 @@ public class AdapterIndustry extends RecyclerView.Adapter<HolderIndustry> {
         return data.size();
     }
 
-    public void setData(@NonNull List<ModelIndustry> newData) {
+    public void setData(@NonNull List<ModelResourceAmount> newData) {
         data.clear();
 
         if (!newData.isEmpty()) {

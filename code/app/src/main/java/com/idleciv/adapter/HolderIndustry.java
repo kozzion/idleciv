@@ -7,7 +7,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.idleciv.R;
+import com.idleciv.activity.ActivityMain;
 import com.idleciv.model.ModelIndustry;
+import com.idleciv.model.ResourceType;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -55,15 +57,17 @@ public class HolderIndustry extends RecyclerView.ViewHolder implements ModelIndu
 
     @Override
     public void updateIndustry(ModelIndustry industry) {
-        mTextName.setText(industry.mIndustryType);
+        mTextName.setText(ResourceType.getName(industry.mResourceIndex));
         mTextStock.setText(Integer.toString((int)industry.mStock));
         mTextProgress.setText(Double.toString(industry.mProgress) + " / 100");
         mProgressProgress.setProgress(industry.mProgress);
-        switch (industry.mIndustryType) {
-            case "Food": mImageIcon.setImageResource(R.drawable.wheat); break;
-            case "Lumber": mImageIcon.setImageResource(R.drawable.lumber); break;
-            default: mImageIcon.setImageResource(R.drawable.wheat); break;
-        }
+        mImageIcon.setImageResource(ResourceType.getIcon(industry.mResourceIndex));
+
+
+        mRootView.setOnClickListener(v -> {
+            ((ActivityMain)mRootView.getContext()).showIndustryDetails(industry);
+
+        });
 
     }
 }
