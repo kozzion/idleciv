@@ -15,7 +15,7 @@ import butterknife.BindView;
  * Created by jaapo on 7-1-2018.
  */
 
-public class FragmentIndustryDetail extends FragmentBase implements ModelGame.GameStateListener {
+public class FragmentIndustryDetail extends FragmentBase implements ModelGame.GameListener {
 
 
 
@@ -32,7 +32,7 @@ public class FragmentIndustryDetail extends FragmentBase implements ModelGame.Ga
     public FragmentIndustryDetail(ModelGame game) {
         super();
         mGame = game;
-        mGame.addGameStateListener(this);
+        mGame.addGameListener(this);
     }
 
     @Override
@@ -46,7 +46,7 @@ public class FragmentIndustryDetail extends FragmentBase implements ModelGame.Ga
     }
 
     @Override
-    public void updateGameState(ModelGameState gameState) {
+    public void updateGame(ModelGameState gameState) {
         mGameState = gameState;
     }
 }

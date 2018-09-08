@@ -13,7 +13,7 @@ public class ResourceType {
 
     public static int Food = 0;
     public static int Lumber = 1;
-    public static int Ward = 2;
+    public static int Stone = 2;
 
     public int mIndex;
     public String mName;
@@ -31,7 +31,7 @@ public class ResourceType {
         Map<Integer, ResourceType> map = new HashMap<>();
         map.put(Food, new ResourceType(Food, "Food", R.drawable.wheat));
         map.put(Lumber, new ResourceType(Lumber, "Lumber", R.drawable.lumber));
-        map.put(Ward, new ResourceType(Ward, "Ward", R.drawable.placeholder));
+        map.put(Stone, new ResourceType(Stone, "Stone", R.drawable.stone));
 
         return map;
     }

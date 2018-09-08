@@ -9,34 +9,37 @@ import java.util.HashSet;
 public class ModelIndustry {
 
     public int mResourceIndex;
-    public int mLabor;
+    public int mPopulationIndustry;
     public double mCapital;
     public double mProduction;
     public double mProductionPerUnit;
 
     public double mStock;
     public int mProgress;
-
+    public transient ModelGameState mGameState;
 
     private transient  HashSet<Listener> mListenerSet;
 
-    public ModelIndustry(int resourceIndex)
+
+    public ModelIndustry(ModelGameState gameState, int resourceIndex)
     {
-        mResourceIndex = resourceIndex;
+        mGameState = gameState;
         mListenerSet = new HashSet<>();
 
-        mLabor = 0;
+        mResourceIndex = resourceIndex;
+        mPopulationIndustry = 0;
         mCapital = 1;
     }
 
-    public void validate() {
+    public void validate(ModelGameState gameState) {
+        mGameState = gameState;
         mListenerSet = new HashSet<>();
     }
 
     public void updateState(double timeElapsed)
     {
 
-        mProduction = mLabor * mCapital;
+        mProduction = mPopulationIndustry * mCapital;
 
         mProgress += 1;
         if(100 < mProgress)

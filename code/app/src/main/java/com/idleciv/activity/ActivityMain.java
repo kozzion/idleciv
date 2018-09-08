@@ -12,6 +12,7 @@ import com.idleciv.common.ActivityBase;
 import com.idleciv.fragment.FragmentIndustryDetail;
 import com.idleciv.fragment.FragmentPopulation;
 import com.idleciv.fragment.FragmentProduction;
+import com.idleciv.fragment.FragmentTechnology;
 import com.idleciv.model.ModelGame;
 import com.idleciv.model.ModelIndustry;
 
@@ -32,6 +33,7 @@ public class ActivityMain extends ActivityBase {
     public ModelGame mGame;
 
     FragmentPopulation mFragmentPopulation;
+    FragmentTechnology mFragmentTechnology;
     FragmentProduction mFragmentProduction;
     FragmentIndustryDetail mFragmentIndustryDetail;
 
@@ -42,10 +44,12 @@ public class ActivityMain extends ActivityBase {
         mGame = new ModelGame();
 
         mFragmentPopulation = new FragmentPopulation(mGame);
+        mFragmentTechnology = new FragmentTechnology(mGame);
         mFragmentProduction = new FragmentProduction(mGame);
         mFragmentIndustryDetail = new FragmentIndustryDetail(mGame);
         List<Fragment> fragments = new ArrayList<>();
         fragments.add(mFragmentPopulation);
+        fragments.add(mFragmentTechnology);
         fragments.add(mFragmentProduction);
         fragments.add(mFragmentIndustryDetail);
 

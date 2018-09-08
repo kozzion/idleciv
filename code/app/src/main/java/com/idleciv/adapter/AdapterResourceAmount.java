@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.idleciv.R;
+import com.idleciv.holder.HolderResourceAmount;
 import com.idleciv.model.ModelResourceAmount;
 
 import java.util.ArrayList;
@@ -30,7 +31,7 @@ public class AdapterResourceAmount extends RecyclerView.Adapter<HolderResourceAm
     @Override
     public HolderResourceAmount onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View item = inflater.inflate(R.layout.item_resource_amount_cost, parent, false);
+        View item = inflater.inflate(R.layout.layout_resource_amount_cost, parent, false);
         return new HolderResourceAmount(item);
     }
 

@@ -6,11 +6,9 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 
 import com.idleciv.R;
-import com.idleciv.adapter.AdapterIndustry;
+import com.idleciv.adapter.AdapterTechnology;
 import com.idleciv.common.FragmentBase;
 import com.idleciv.model.ModelGame;
 import com.idleciv.model.ModelGameState;
@@ -21,56 +19,43 @@ import butterknife.BindView;
  * Created by jaapo on 7-1-2018.
  */
 
-public class FragmentProduction extends FragmentBase implements ModelGame.GameListener, ModelGameState.GameStateListener {
+public class FragmentTechnology extends FragmentBase implements ModelGameState.GameStateListener {
 
-    @BindView(R.id.production_recycler)
+    @BindView(R.id.technology_rv_availeble)
     RecyclerView mRecycler;
 
-    @BindView(R.id.production_button_reset)
-    Button mButtonReset;
 
-    @BindView(R.id.production_tv_population)
-    TextView mPopulation;
-
-    AdapterIndustry mAdapter;
+    AdapterTechnology mAdapter;
 
 
     ModelGame mGame;
     ModelGameState mGameState;
 
-    public FragmentProduction(ModelGame game) {
+    public FragmentTechnology(ModelGame game) {
         super();
         mGame = game;
-        mGame.addGameListener(this);
+        mGameState = game.mGameState;
         mGameState.addListener(this);
     }
 
 
     @Override
     protected int getLayoutRes() {
-        return R.layout.layout_production;
+        return R.layout.layout_fragment_technology;
     }
 
     @CallSuper
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mAdapter = new AdapterIndustry(getContext());
+        mAdapter = new AdapterTechnology(getContext());
         mRecycler.setAdapter(mAdapter);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         layoutManager.setAutoMeasureEnabled(true);
         mRecycler.setLayoutManager(layoutManager);
-        mAdapter.setData(mGameState.mIndustryList);
+        mAdapter.setData(mGameState.mTechnologyAvailableList);
 
-        mButtonReset.setOnClickListener(v -> mGame.reset());
-    }
 
-    @Override
-    public void updateGame(ModelGameState gameState) {
-        mGameState = gameState;
-        if(mAdapter != null) {
-            mAdapter.setData(mGameState.mIndustryList);
-        }
     }
 
     @Override
@@ -79,14 +64,9 @@ public class FragmentProduction extends FragmentBase implements ModelGame.GameLi
         if(mAdapter != null) {
             bind(gameState);
         }
-
     }
 
-    public void bind(ModelGameState gameState)
-    {
-        mAdapter.setData(mGameState.mIndustryList);
-
-        String population = mGameState.mPopulationFree + "/" + mGameState.mPopulationTotal;
-        mPopulation.setText(population);
+    public void bind(ModelGameState gameState) {
+        mAdapter.setData(mGameState.mTechnologyAvailableList);
     }
 }

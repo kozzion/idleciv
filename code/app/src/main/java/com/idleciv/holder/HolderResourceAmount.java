@@ -1,4 +1,4 @@
-package com.idleciv.adapter;
+package com.idleciv.holder;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;

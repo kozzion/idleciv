@@ -16,7 +16,6 @@ import com.idleciv.model.ModelGame;
 import com.idleciv.model.ModelGameState;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 
@@ -24,7 +23,7 @@ import butterknife.BindView;
  * Created by jaapo on 7-1-2018.
  */
 
-public class FragmentPopulation extends FragmentBase implements ModelGame.GameStateListener {
+public class FragmentPopulation extends FragmentBase implements ModelGame.GameListener {
 
     @BindView(R.id.population_text_count)
     TextView mCount;
@@ -44,7 +43,7 @@ public class FragmentPopulation extends FragmentBase implements ModelGame.GameSt
         super();
         mGame = game;
         mGameState = mGame.mGameState;
-        mGame.addGameStateListener(this);
+        mGame.addGameListener(this);
         mAdapter = new AdapterResourceAmount(getContext());
     }
 
@@ -70,7 +69,7 @@ public class FragmentPopulation extends FragmentBase implements ModelGame.GameSt
             mAdapter.setData(new ArrayList<>());
         }
         if(mCount != null) {
-            mCount.setText(Integer.toString(mGameState.mPopulation));
+            mCount.setText(Integer.toString(mGameState.mPopulationTotal));
             mBuy.setOnClickListener(v -> {
                 mGameState.buyPopulation();
 
@@ -79,13 +78,13 @@ public class FragmentPopulation extends FragmentBase implements ModelGame.GameSt
                 } else {
                     mAdapter.setData(new ArrayList<>());
                 }
-                mCount.setText(Integer.toString(mGameState.mPopulation));
+                mCount.setText(Integer.toString(mGameState.mPopulationTotal));
             });
         }
     }
 
     @Override
-    public void updateGameState(ModelGameState gameState) {
+    public void updateGame(ModelGameState gameState) {
         mGameState = gameState;
     }
 }

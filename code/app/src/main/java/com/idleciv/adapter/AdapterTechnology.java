@@ -8,35 +8,30 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.idleciv.R;
-import com.idleciv.model.ModelIndustry;
-import com.idleciv.holder.HolderIndustry;
+import com.idleciv.holder.HolderTechnology;
+import com.idleciv.model.ModelTechnology;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by jaapo on 23-12-2017.
- */
-
-public class AdapterIndustry extends RecyclerView.Adapter<HolderIndustry> {
-
+public class AdapterTechnology extends RecyclerView.Adapter<HolderTechnology> {
     private static final int TYPE_ITEM = 0;
 
-    private List<ModelIndustry> data;
+    private List<ModelTechnology> data;
 
-    public AdapterIndustry(@NonNull Context context) {
+    public AdapterTechnology(@NonNull Context context) {
         this.data = new ArrayList<>();
     }
 
     @Override
-    public HolderIndustry onCreateViewHolder(ViewGroup parent, int viewType) {
+    public HolderTechnology onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View item = inflater.inflate(R.layout.layout_industry, parent, false);
-        return new HolderIndustry(item);
+        View item = inflater.inflate(R.layout.layout_item_technology, parent, false);
+        return new HolderTechnology(item);
     }
 
     @Override
-    public void onBindViewHolder(HolderIndustry holder, int position) {
+    public void onBindViewHolder(HolderTechnology holder, int position) {
         holder.bind(data.get(position));
     }
 
@@ -51,7 +46,7 @@ public class AdapterIndustry extends RecyclerView.Adapter<HolderIndustry> {
         return data.size();
     }
 
-    public void setData(@NonNull ArrayList<ModelIndustry> newData) {
+    public void setData(@NonNull ArrayList<ModelTechnology> newData) {
         data.clear();
 
         if (!newData.isEmpty()) {

@@ -4,9 +4,14 @@
     android:layout_height="match_parent">
 
     <TextView
-    android:layout_width="wrap_content"
-    android:layout_height="60dp"
-    android:text="Production" />
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:text="Production" />
+
+    <TextView
+        android:id="@+id/production_tv_population"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"/>
 
     <Button
         android:id="@+id/production_button_reset"

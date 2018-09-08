@@ -18,7 +18,7 @@ import java.util.HashSet;
 public class ModelGame {
 
     public ModelGameState mGameState;
-    HashSet<GameStateListener> mListenerSet;
+    HashSet<GameListener> mListenerSet;
 
     public ModelGame() {
         mGameState = new ModelGameState();
@@ -66,17 +66,17 @@ public class ModelGame {
     }
 
     private void updateListeners() {
-        for (GameStateListener listener: mListenerSet) {
-            listener.updateGameState(mGameState);
+        for (GameListener listener: mListenerSet) {
+            listener.updateGame(mGameState);
         }
     }
 
-    public void addGameStateListener(GameStateListener listener) {
+    public void addGameListener(GameListener listener) {
         mListenerSet.add(listener);
-        listener.updateGameState(mGameState);
+        listener.updateGame(mGameState);
     }
 
-    public interface GameStateListener {
-        void updateGameState(ModelGameState gameState);
+    public interface GameListener {
+        void updateGame(ModelGameState gameState);
     }
 }
