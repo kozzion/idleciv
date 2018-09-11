@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    android:background="@drawable/background_item_industry"
+    android:layout_margin="5dp"
+    android:padding="5dp">
+
+    <ImageView
+        android:id="@+id/item_industry_image_icon"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_width="0dp"
+        android:layout_weight="3"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/item_industry_tv_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/item_industry_tv_stock"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <ProgressBar style="?android:attr/progressBarStyleHorizontal"
+            android:id="@+id/item_industry_progress_progress"
+
+
+            android:progressDrawable="@drawable/custom_progress_bar_horizontal"
+            android:minHeight="10dp"
+            android:maxHeight="20dp"
+
+            android:layout_width="match_parent"
+            android:layout_height="20dp" />
+
+        <TextView
+            android:id="@+id/item_time_tv_progress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="40dp" >
+            <Button
+                android:id="@+id/industry_bt_remove_pop"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:text="-"/>
+
+            <Button
+                android:id="@+id/industry_bt_add_pop"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:text="+"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/industry_tv_current_pop"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:text="0/0"/>
+    </LinearLayout>
+</LinearLayout>

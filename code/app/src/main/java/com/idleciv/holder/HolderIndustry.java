@@ -1,6 +1,7 @@
 package com.idleciv.holder;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -10,7 +11,7 @@ import android.widget.TextView;
 import com.idleciv.R;
 import com.idleciv.activity.ActivityMain;
 import com.idleciv.model.ModelIndustry;
-import com.idleciv.model.ResourceType;
+import com.idleciv.model.ModelResourceStock;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -24,13 +25,13 @@ public class HolderIndustry extends RecyclerView.ViewHolder implements ModelIndu
     @BindView(R.id.item_industry_image_icon)
     ImageView mImageIcon;
 
-    @BindView(R.id.item_industry_text_name)
+    @BindView(R.id.item_industry_tv_name)
     TextView mTextName;
 
-    @BindView(R.id.item_industry_text_stock)
+    @BindView(R.id.item_industry_tv_stock)
     TextView mTextStock;
 
-    @BindView(R.id.item_industry_text_progress)
+    @BindView(R.id.item_time_tv_progress)
     TextView mTextProgress;
 
     @BindView(R.id.item_industry_progress_progress)
@@ -56,53 +57,42 @@ public class HolderIndustry extends RecyclerView.ViewHolder implements ModelIndu
     }
 
     public void bind(ModelIndustry modelIndustry) {
+        //Log.e("ModelIndustry", "bind: ");
         mIndustry = modelIndustry;
         mIndustry.addListener(this);
+/*
+
+        mRootView.setOnClickListener(v -> {
+            ((ActivityMain)mRootView.getContext()).showIndustryDetails(mIndustry);
+        });
+*/
+
         mAddPop.setOnClickListener(v -> {
-            addPop();
+            Log.e("ADD", "click: ");
+            mIndustry.addPop();
         });
 
         mRemovePop.setOnClickListener(v -> {
-            removePop();
+            mIndustry.removePop();
         });
     }
 
-    private void addPop() {
-        if(0 < mIndustry.mGameState.mPopulationFree){
-            mIndustry.mGameState.mPopulationFree--;
-            mIndustry.mPopulationIndustry++;
-            mIndustry.mGameState.updateUI();
-            mIndustry.updateUI();
-        }
-    }
 
-    private void removePop() {
-        if(0 < mIndustry.mPopulationIndustry){
-            mIndustry.mPopulationIndustry--;
-            mIndustry.mGameState.mPopulationFree++;
-            mIndustry.mGameState.updateUI();
-            mIndustry.updateUI();
-        }
-    }
 
     public void unbind(ModelIndustry modelIndustry) {
         mIndustry.removeListener(this);
     }
 
     @Override
-    public void updateIndustry(ModelIndustry industry) {
-        mTextName.setText(ResourceType.getName(industry.mResourceIndex));
-        mTextStock.setText(Integer.toString((int)industry.mStock));
-        mTextProgress.setText(Double.toString(industry.mProgress) + " / 100");
-        mProgressProgress.setProgress(industry.mProgress);
-        mImageIcon.setImageResource(ResourceType.getIcon(industry.mResourceIndex));
+    public void updateIndustryUI() {
+        mTextName.setText(ModelIndustry.getName(mIndustry.mIndustryIndex));
+        //mTextStock.setText(Integer.toString((int)industry.mGameState.mResourceStockMap.get(industry.mResourceIndex).mStock));
+        //mTextProgress.setText(Double.toString(industry.mProgress) + " / 100");
+        //mProgressProgress.setProgress(industry.mProgress);
+        mImageIcon.setImageResource(ModelIndustry.getIcon(mIndustry.mIndustryIndex));
 
         mCurrentPop.setText(Integer.toString(mIndustry.mPopulationIndustry));
 
-        mRootView.setOnClickListener(v -> {
-            ((ActivityMain)mRootView.getContext()).showIndustryDetails(industry);
-
-        });
 
     }
 }

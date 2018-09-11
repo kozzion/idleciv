@@ -1,0 +1,18 @@
+Speciallization 
+	should pay off
+	should be inuitive,
+	Should have lasting results
+
+Specialization types:
+	War
+	Constuction/infrastructure
+	Production/effciency
+	Culture
+	Science
+	Politics/trade
+
+FactionType
+	Central
+	Decentral
+	Liberal
+	

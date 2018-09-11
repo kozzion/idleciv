@@ -1,6 +1,9 @@
 package com.idleciv.model;
 
+import android.util.Log;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 
 /**
@@ -10,63 +13,96 @@ import java.util.HashSet;
 public class ModelGameState {
 
 
+    public static final int mCurrentVersionNumber = 9;
 
-    public static int mCurrentVersionNumber = 2;
+
+    private transient  HashSet<ModelGameState.GameStateListener> mListenerSet;
+
     public int mVersionNumber;
+
+    public boolean mHasChanges; // for research
+
     public int mPopulationTotal;
     public int mPopulationFree;
     public ArrayList<ModelCost> mPopulationCostList;
-    public ArrayList<ModelIndustry> mIndustryList;
-    public ArrayList<ModelTechnology> mTechnologyAvailableList;
-    public ArrayList<ModelTechnology> mTechnologyBougthList;
-    public ModelObjective mObjective;
 
-    private transient  HashSet<ModelGameState.GameStateListener> mListenerSet;
+    public HashMap<Integer, ModelResourceStock> mResourceStockMap;
+    public HashMap<Integer, ModelIndustry> mIndustryMap;
+    public HashMap<Integer, ModelTechnology> mTechnologyMap;
+
+    public ModelObjective mObjective;
+    public ModelTime mTime;
+
 
 
     public ModelGameState()
     {
         mListenerSet = new HashSet<>();
 
-
-
         mVersionNumber = mCurrentVersionNumber;
         mPopulationTotal = 1;
         mPopulationFree = 1;
-        mIndustryList = new ArrayList<>();
-        mPopulationCostList = new ArrayList<>();
-        mTechnologyAvailableList = new ArrayList<>();
-        mTechnologyBougthList = new ArrayList<>();
-        loadTechnologies();
-        loadPopIncreaes();
 
-        mIndustryList.add(
-                new ModelIndustry(this, ResourceType.Food));
-        mIndustryList.add(
-                new ModelIndustry(this, ResourceType.Lumber));
-        mIndustryList.add(
-                new ModelIndustry(this, ResourceType.Stone));
+        mTime = new ModelTime(this);
+
+        mResourceStockMap = new HashMap<>();
+        for (ModelResourceStock resourceStock: ModelResourceStock.getResourceList(this)) {
+            mResourceStockMap.put(resourceStock.mResourceIndex, resourceStock);
+        }
+
+        mTechnologyMap = new HashMap<>();
+        for (ModelTechnology technology: ModelTechnology.getTechnologyList(this)) {
+            mTechnologyMap.put(technology.mTechnologyIndex, technology);
+        }
+
+        mIndustryMap = new HashMap<>();
+        for (ModelIndustry industry: ModelIndustry.getIndustryList(this)) {
+            mIndustryMap.put(industry.mIndustryIndex, industry);
+        }
+
+        mPopulationCostList = new ArrayList<>();
+
+        loadPopIncreaes();
+        mHasChanges = true;
     }
 
+    public ModelGameState validate()
+    {
+        mListenerSet = new HashSet<>();
+        if(mVersionNumber != mCurrentVersionNumber) {
+            //Log.e("validate", "creating new ");
+            mHasChanges = true;
+            return new ModelGameState();
+        } else {
+            //Log.e("validate", "validating");
+            mTime.validate(this);
+            for (ModelIndustry industry : mIndustryMap.values()) {
+                industry.validate(this);
+            }
+            for (ModelResourceStock resourceStock: mResourceStockMap.values()) {
+                resourceStock.validate(this);
+            }
+            mHasChanges = true;
+            return this;
+        }
 
-
-    public void loadTechnologies() {
-        mTechnologyAvailableList.addAll(ModelTechnology.getTechnologies(this));
     }
 
     public void loadPopIncreaes() {
         ModelCost cost0 = new ModelCost();
-        cost0.mResourceCostList.add(new ModelResourceAmount(ResourceType.Food, 1));
+        cost0.mResourceCostList.add(new ModelResourceAmount(ModelResourceStock.Food, 1));
+
         ModelCost cost1 = new ModelCost();
-        cost1.mResourceCostList.add(new ModelResourceAmount(ResourceType.Food, 4));
+        cost1.mResourceCostList.add(new ModelResourceAmount(ModelResourceStock.Food, 4));
+
         ModelCost cost2 = new ModelCost();
-        cost2.mResourceCostList.add(new ModelResourceAmount(ResourceType.Food, 20));
-        cost2.mResourceCostList.add(new ModelResourceAmount(ResourceType.Lumber, 10));
+        cost2.mResourceCostList.add(new ModelResourceAmount(ModelResourceStock.Food, 20));
+        cost2.mResourceCostList.add(new ModelResourceAmount(ModelResourceStock.Lumber, 10));
 
         ModelCost cost3 = new ModelCost();
-        cost2.mResourceCostList.add(new ModelResourceAmount(ResourceType.Food, 20));
-        cost2.mResourceCostList.add(new ModelResourceAmount(ResourceType.Lumber, 10));
-        cost2.mResourceCostList.add(new ModelResourceAmount(ResourceType.Stone, 10));
+        cost3.mResourceCostList.add(new ModelResourceAmount(ModelResourceStock.Food, 20));
+        cost3.mResourceCostList.add(new ModelResourceAmount(ModelResourceStock.Lumber, 10));
+        cost3.mResourceCostList.add(new ModelResourceAmount(ModelResourceStock.Stone, 10));
 
         mPopulationCostList.add(cost0);
         mPopulationCostList.add(cost1);
@@ -86,6 +122,7 @@ public class ModelGameState {
                 mPopulationFree++;
             }
         }
+        mHasChanges = true;
         return true;
     }
 
@@ -96,7 +133,7 @@ public class ModelGameState {
     private boolean checkCost(ModelCost cost)
     {
         for (ModelResourceAmount resourceAmount: cost.mResourceCostList) {
-            if(resourceAmount.mAmount > mIndustryList.get(resourceAmount.mResourceIndex).mStock)
+            if(resourceAmount.mAmount > mResourceStockMap.get(resourceAmount.mResourceIndex).mStock)
             {
                 return false;
             }
@@ -107,42 +144,20 @@ public class ModelGameState {
     private void payCost(ModelCost cost)
     {
         for (ModelResourceAmount resourceAmount: cost.mResourceCostList) {
-            mIndustryList.get(resourceAmount.mResourceIndex).mStock -= resourceAmount.mAmount;
+            mResourceStockMap.get(resourceAmount.mResourceIndex).mStock -= resourceAmount.mAmount;
         }
-    }
-
-
-    public ModelGameState validate()
-    {
-        mListenerSet = new HashSet<>();
-        if(mVersionNumber != mCurrentVersionNumber) {
-            return new ModelGameState();
-        } else {
-            for (ModelIndustry industry : mIndustryList) {
-                industry.validate(this);
-            }
-            return this;
-        }
-
     }
 
     public void dispose() {
-        for (ModelIndustry industry : mIndustryList) {
+        for (ModelIndustry industry : mIndustryMap.values()) {
             industry.clear();
         }
     }
 
 
-
-    public void updateUI() {
-        for (ModelGameState.GameStateListener listener: mListenerSet) {
-            listener.updateGameState(this);
-        }
-    }
-
     public void addListener(ModelGameState.GameStateListener listener) {
         mListenerSet.add(listener);
-        listener.updateGameState(this);
+        listener.updateGameStateUI();
     }
 
     public void removeListener(ModelGameState.GameStateListener listener) {
@@ -155,8 +170,62 @@ public class ModelGameState {
         mListenerSet = new HashSet<>();
     }
 
+    public ArrayList<ModelIndustry> getEnabledIndustryList() {
+        ArrayList<ModelIndustry> enabledIndustryList = new ArrayList<>();
+        for (ModelIndustry industry: mIndustryMap.values()) {
+            if (industry.mIsEnabled){
+                enabledIndustryList.add(industry);
+            }
+        }
+        return enabledIndustryList;
+    }
+
+
+    public ArrayList<ModelResourceStock> getEnabledResourceList() {
+        ArrayList<ModelResourceStock> enabledResourceList = new ArrayList<>();
+        for (ModelResourceStock resourceStock: mResourceStockMap.values()) {
+            if (resourceStock.mIsEnabled){
+                enabledResourceList.add(resourceStock);
+            }
+        }
+        return enabledResourceList;
+    }
+
+    public ArrayList<ModelTechnology> getAvailebleTechnologyList() {
+        ArrayList<ModelTechnology> availebleTechnologyList = new ArrayList<>();
+        for (ModelTechnology technology: mTechnologyMap.values()) {
+            if (technology.mIsResearched == false){
+                availebleTechnologyList.add(technology);
+            }
+        }
+        return availebleTechnologyList;
+    }
+
+    public void updateState(double elapsedSeconds) {
+        mTime.updateState(elapsedSeconds);
+    }
+
+    public void updateUI() {
+        if(mHasChanges){
+            for (ModelGameState.GameStateListener listener: mListenerSet) {
+                listener.updateGameStateUI();
+            }
+            mHasChanges = false;
+        }
+
+        mTime.updateUI();
+        for (ModelIndustry industry: mIndustryMap.values()) {
+            industry.updateUI();
+        }
+    }
+
+    public void tickYear() {
+        for (ModelIndustry industry: mIndustryMap.values()) {
+            industry.tickProduction();
+        }
+    }
 
     public interface GameStateListener {
-        void updateGameState(ModelGameState gameState);
+        void updateGameStateUI();
     }
 }

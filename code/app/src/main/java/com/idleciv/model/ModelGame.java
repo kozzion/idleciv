@@ -3,6 +3,7 @@ package com.idleciv.model;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
@@ -17,19 +18,21 @@ import java.util.HashSet;
 
 public class ModelGame {
 
+    private boolean mHasChanges;
+    private HashSet<GameListener> mListenerSet;
     public ModelGameState mGameState;
-    HashSet<GameListener> mListenerSet;
+
 
     public ModelGame() {
         mGameState = new ModelGameState();
         mListenerSet = new HashSet<>();
+        mHasChanges = true;
     }
 
     public void reset() {
         mGameState.dispose();
         mGameState = new ModelGameState();
-        updateListeners();
-
+        mHasChanges = true;
     }
 
 
@@ -47,36 +50,53 @@ public class ModelGame {
         mGameState.dispose();
         String gameStateJson = activity.getPreferences(Context.MODE_PRIVATE).getString("GameState", "");
         if(gameStateJson.equals("") || gameStateJson.equals("null")) {
+            Log.e("load", "creating new ");
             mGameState = new ModelGameState();
         } else {
             try {
                 Gson gson = new Gson();
                 Type type = new TypeToken<ModelGameState>() {
                 }.getType();
+                Log.e("load", "loading");
                 mGameState = gson.fromJson(gameStateJson, type);
             }
             catch (JsonSyntaxException e)
             {
+                Log.e("load", "creating new fallback");
                 mGameState = new ModelGameState();
             }
         }
-        mGameState.validate();
-        updateListeners();
+        mGameState = mGameState.validate();
+        mHasChanges = true;
+    }
 
+
+    public void updateUI() {
+        if(mHasChanges) {
+            updateListeners();
+        }
+
+        mGameState.updateUI();
+        mHasChanges = false;
     }
 
     private void updateListeners() {
         for (GameListener listener: mListenerSet) {
-            listener.updateGame(mGameState);
+            listener.updateGameUI();
         }
     }
 
     public void addGameListener(GameListener listener) {
         mListenerSet.add(listener);
-        listener.updateGame(mGameState);
+        listener.updateGameUI();
     }
 
+    public void updateState(double elapsedSeconds) {
+        mGameState.updateState(elapsedSeconds);
+    }
+
+
     public interface GameListener {
-        void updateGame(ModelGameState gameState);
+        void updateGameUI();
     }
 }

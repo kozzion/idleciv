@@ -1,5 +1,6 @@
 package com.idleciv.fragment;
 
+
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
 import android.support.annotation.Nullable;
@@ -7,89 +8,84 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.idleciv.R;
-import com.idleciv.activity.ActivityMain;
-import com.idleciv.adapter.AdapterTechnology;
+import com.idleciv.adapter.AdapterIndustry;
+import com.idleciv.adapter.AdapterResourceStock;
 import com.idleciv.common.FragmentBase;
-import com.idleciv.holder.HolderTechnologyDetails;
-import com.idleciv.model.ModelGame;
+import com.idleciv.holder.HolderTime;
 import com.idleciv.model.ModelGameState;
-import com.idleciv.model.ModelTechnology;
 
 import butterknife.BindView;
 
-/**
- * Created by jaapo on 7-1-2018.
- */
-
-public class FragmentTechnology extends FragmentBase implements ModelGameState.GameStateListener {
+public class FragmentResources extends FragmentBase implements ModelGameState.GameStateListener {
 
     private boolean mIsInitialized = false;
 
-    @BindView(R.id.technology_rv_availeble)
+    @BindView(R.id.resources_ll_time)
+    View mLayoutTime;
+
+    @BindView(R.id.resources_rv_recycler)
     RecyclerView mRecycler;
 
-    @BindView(R.id.technology_ll_details)
-    View mLayoutDetails;
+    private AdapterResourceStock mAdapter;
+    private HolderTime mHolderTime;
 
-    AdapterTechnology mAdapter;
-    ModelGame mGame;
-    ModelGameState mGameState;
-
-    private HolderTechnologyDetails mDetailsHolder;
+    public ModelGameState mGameState;
 
 
     @Override
     protected int getLayoutRes() {
-        return R.layout.layout_fragment_technology;
+        return R.layout.layout_fragment_resources;
     }
 
     @CallSuper
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        //Log.e(TAG, "onViewCreated: ");
         super.onViewCreated(view, savedInstanceState);
-        mAdapter = new AdapterTechnology(getContext(), new ModelTechnology.TechnologyListener(){
-            @Override
-            public void updateTechnology(ModelTechnology technology) {
-                setTechnology(technology);
-            }
-        });
-
+        mAdapter = new AdapterResourceStock(getContext());
         mRecycler.setAdapter(mAdapter);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         layoutManager.setAutoMeasureEnabled(true);
         mRecycler.setLayoutManager(layoutManager);
+//        mAdapter.setData(mGameState.getEnabledIndustryList());
 
-        mDetailsHolder = new HolderTechnologyDetails(mLayoutDetails);
+        mHolderTime = new HolderTime(mLayoutTime);
+
         mIsInitialized = true;
-        if(mGameState != null) {
+        if (mGameState != null) {
             updateGameStateUI();
         }
     }
 
     @Override
-    public void onDestroyView()
-    {
+    public void onDestroyView() {
         super.onDestroyView();
         //Log.e(TAG, "onDestroyView: ");
         mIsInitialized = false;
     }
 
-    public void setTechnology(ModelTechnology technology) {
-        mDetailsHolder.bind(technology);
-    }
 
     @Override
     public void updateGameStateUI() {
         Log.e(TAG, "updateGameStateUI: ");
-        if(mIsInitialized) {
-            mAdapter.setData(mGameState.getAvailebleTechnologyList());
+        if (mIsInitialized) {
+            mHolderTime.bind(mGameState.mTime);
+            mAdapter.setData(mGameState.getEnabledResourceList());
+        }
+    }
+
+    public void onHiddenChanged(boolean hidden) {
+        if (hidden) {
+            mIsInitialized = false;
         }
     }
 
     public void bind(ModelGameState gameState) {
-        Log.e(TAG, "bind: ");
+        Log.e(TAG, "bind");
         //Unbind previous
         if (mGameState != null) {
             mGameState.removeListener(this);

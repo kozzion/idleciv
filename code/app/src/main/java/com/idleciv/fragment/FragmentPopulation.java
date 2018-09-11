@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.idleciv.R;
+import com.idleciv.activity.ActivityMain;
 import com.idleciv.adapter.AdapterResourceAmount;
 import com.idleciv.common.FragmentBase;
 import com.idleciv.model.ModelGame;
@@ -23,7 +24,9 @@ import butterknife.BindView;
  * Created by jaapo on 7-1-2018.
  */
 
-public class FragmentPopulation extends FragmentBase implements ModelGame.GameListener {
+public class FragmentPopulation extends FragmentBase implements ModelGameState.GameStateListener {
+
+    private boolean mIsInitialized = false;
 
     @BindView(R.id.population_text_count)
     TextView mCount;
@@ -34,22 +37,19 @@ public class FragmentPopulation extends FragmentBase implements ModelGame.GameLi
     @BindView(R.id.population_recycler_cost)
     RecyclerView mRecycler;
 
-    AdapterResourceAmount mAdapter;
+    private AdapterResourceAmount mAdapter;
 
-    public ModelGame mGame;
+
     public ModelGameState mGameState;
 
-    public FragmentPopulation(ModelGame game) {
+    public FragmentPopulation() {
         super();
-        mGame = game;
-        mGameState = mGame.mGameState;
-        mGame.addGameListener(this);
         mAdapter = new AdapterResourceAmount(getContext());
     }
 
     @Override
     protected int getLayoutRes() {
-        return R.layout.fragment_population;
+        return R.layout.layout_fragment_population;
     }
 
     @CallSuper
@@ -60,31 +60,46 @@ public class FragmentPopulation extends FragmentBase implements ModelGame.GameLi
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         layoutManager.setAutoMeasureEnabled(true);
         mRecycler.setLayoutManager(layoutManager);
-    }
 
-    public void updateUI() {
-        if(0 <mGameState.mPopulationCostList.size()) {
-            mAdapter.setData(mGameState.mPopulationCostList.get(0).mResourceCostList);
-        } else {
-            mAdapter.setData(new ArrayList<>());
-        }
-        if(mCount != null) {
-            mCount.setText(Integer.toString(mGameState.mPopulationTotal));
-            mBuy.setOnClickListener(v -> {
-                mGameState.buyPopulation();
-
-                if(0 <mGameState.mPopulationCostList.size()) {
-                    mAdapter.setData(mGameState.mPopulationCostList.get(0).mResourceCostList);
-                } else {
-                    mAdapter.setData(new ArrayList<>());
-                }
-                mCount.setText(Integer.toString(mGameState.mPopulationTotal));
-            });
+        mIsInitialized = true;
+        if(mGameState != null) {
+            updateGameStateUI();
         }
     }
 
     @Override
-    public void updateGame(ModelGameState gameState) {
+    public void onDestroyView()
+    {
+        super.onDestroyView();
+        //Log.e(TAG, "onDestroyView: ");
+        mIsInitialized = false;
+    }
+
+    @Override
+    public void updateGameStateUI() {
+        if (mIsInitialized) {
+            if (0 < mGameState.mPopulationCostList.size()) {
+                mAdapter.setData(mGameState.mPopulationCostList.get(0).mResourceCostList);
+            } else {
+                mAdapter.setData(new ArrayList<>());
+            }
+
+            mCount.setText(Integer.toString(mGameState.mPopulationTotal));
+
+            mBuy.setOnClickListener(v -> {
+                mGameState.buyPopulation();
+                mGameState.updateUI();
+            });
+        }
+    }
+
+    public void bind(ModelGameState gameState) {
+        //Unbind previous
+        if (mGameState != null) {
+            mGameState.removeListener(this);
+        }
+        //Bind current
         mGameState = gameState;
+        gameState.addListener(this);
     }
 }

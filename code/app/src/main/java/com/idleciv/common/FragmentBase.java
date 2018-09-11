@@ -43,6 +43,8 @@ public abstract class FragmentBase extends MvpAppCompatFragment {
         TAG = this.getClass().getName();
     }
 
+
+
     @CallSuper
     @Override
     public void onDestroyView() {

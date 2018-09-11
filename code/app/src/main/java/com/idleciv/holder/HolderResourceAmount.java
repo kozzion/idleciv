@@ -8,7 +8,7 @@ import android.widget.TextView;
 import com.idleciv.R;
 import com.idleciv.activity.ActivityMain;
 import com.idleciv.model.ModelResourceAmount;
-import com.idleciv.model.ResourceType;
+import com.idleciv.model.ModelResourceStock;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -40,10 +40,11 @@ public class HolderResourceAmount extends RecyclerView.ViewHolder {
 
     public void bind(ModelResourceAmount resourceAmount) {
         mResourceAmount = resourceAmount;
-        mTextName.setText(ResourceType.getName(mResourceAmount.mResourceIndex));
-        mImageIcon.setImageResource(ResourceType.getIcon(mResourceAmount.mResourceIndex));
+        mTextName.setText(ModelResourceStock.getName(mResourceAmount.mResourceIndex));
+        mImageIcon.setImageResource(ModelResourceStock.getIcon(mResourceAmount.mResourceIndex));
 
-        int stock = (int)((ActivityMain)mRootView.getContext()).mGame.mGameState.mIndustryList.get(mResourceAmount.mResourceIndex).mStock;
+        //Dirty hack
+        int stock = (int)((ActivityMain)mRootView.getContext()).mGame.mGameState.mResourceStockMap.get(mResourceAmount.mResourceIndex).mStock;
         mTextStock.setText(Integer.toString(stock) + "/" + Integer.toString(mResourceAmount.mAmount));
 
     /*    mRootView.setOnClickListener(v -> {

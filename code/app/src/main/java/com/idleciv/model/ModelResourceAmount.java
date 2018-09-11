@@ -1,5 +1,7 @@
 package com.idleciv.model;
 
+import java.util.ArrayList;
+
 /**
  * Created by jaapo on 8-1-2018.
  */
@@ -14,4 +16,5 @@ public class ModelResourceAmount {
         mResourceIndex = resourceIndex;
         mAmount = amount;
     }
+
 }

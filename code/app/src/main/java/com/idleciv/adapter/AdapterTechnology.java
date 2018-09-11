@@ -8,31 +8,33 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.idleciv.R;
-import com.idleciv.holder.HolderTechnology;
+import com.idleciv.holder.HolderTechnologyItem;
 import com.idleciv.model.ModelTechnology;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class AdapterTechnology extends RecyclerView.Adapter<HolderTechnology> {
+public class AdapterTechnology extends RecyclerView.Adapter<HolderTechnologyItem> {
     private static final int TYPE_ITEM = 0;
 
-    private List<ModelTechnology> data;
+    private List<ModelTechnology> mData;
+    private ModelTechnology.TechnologyListener mListener;
 
-    public AdapterTechnology(@NonNull Context context) {
-        this.data = new ArrayList<>();
+    public AdapterTechnology(@NonNull Context context, ModelTechnology.TechnologyListener listener) {
+        this.mData = new ArrayList<>();
+        mListener = listener;
     }
 
     @Override
-    public HolderTechnology onCreateViewHolder(ViewGroup parent, int viewType) {
+    public HolderTechnologyItem onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View item = inflater.inflate(R.layout.layout_item_technology, parent, false);
-        return new HolderTechnology(item);
+        return new HolderTechnologyItem(item, mListener);
     }
 
     @Override
-    public void onBindViewHolder(HolderTechnology holder, int position) {
-        holder.bind(data.get(position));
+    public void onBindViewHolder(HolderTechnologyItem holder, int position) {
+        holder.bind(mData.get(position));
     }
 
 
@@ -43,14 +45,14 @@ public class AdapterTechnology extends RecyclerView.Adapter<HolderTechnology> {
 
     @Override
     public int getItemCount() {
-        return data.size();
+        return mData.size();
     }
 
     public void setData(@NonNull ArrayList<ModelTechnology> newData) {
-        data.clear();
+        mData.clear();
 
         if (!newData.isEmpty()) {
-            data.addAll(newData);
+            mData.addAll(newData);
         }
         notifyDataSetChanged();
     }

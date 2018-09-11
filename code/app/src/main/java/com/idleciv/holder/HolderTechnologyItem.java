@@ -4,19 +4,15 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.idleciv.R;
-import com.idleciv.activity.ActivityMain;
-import com.idleciv.model.ModelIndustry;
 import com.idleciv.model.ModelTechnology;
-import com.idleciv.model.ResourceType;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class HolderTechnology extends RecyclerView.ViewHolder {
+public class HolderTechnologyItem extends RecyclerView.ViewHolder {
 
     @BindView(R.id.item_technology_iv_icon)
     ImageView mImageIcon;
@@ -33,18 +29,23 @@ public class HolderTechnology extends RecyclerView.ViewHolder {
 
     private View mRootView;
     private ModelTechnology mTechnology;
+    private ModelTechnology.TechnologyListener mListener;
 
-    public HolderTechnology(View rootView) {
+    public HolderTechnologyItem(View rootView, ModelTechnology.TechnologyListener listener) {
         super(rootView);
         mRootView = rootView;
+        mListener = listener;
         ButterKnife.bind(this, itemView);
     }
 
     public void bind(ModelTechnology modelIndustry) {
         mTechnology = modelIndustry;
         mImageIcon.setImageResource(ModelTechnology.getIcon(mTechnology.mTechnologyIndex));
-        mTextName.setText(mTechnology.mName);
-        mDescription.setText(mTechnology.mDescription);
+        mTextName.setText(ModelTechnology.getName(mTechnology.mTechnologyIndex));
+        mDescription.setText(ModelTechnology.getDescription(mTechnology.mTechnologyIndex));
+        mRootView.setOnClickListener(v -> {
+            mListener.updateTechnology(mTechnology);
+        });
         mResearch.setOnClickListener(v -> {
             mTechnology.research();
         });

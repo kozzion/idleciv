@@ -3,17 +3,21 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:text="Production" />
+
+    <include
+        android:id="@+id/resources_ll_time"
+        layout="@layout/layout_item_time"/>
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/technology_rv_availeble"
+        android:id="@+id/resources_rv_recycler"
         android:layout_width="match_parent"
         android:background="@color/colorPrimary"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:scrollbars="vertical"/>
-
-    <include
-        android:id="@+id/technology_ll_details"
-        layout="@layout/layout_details_technology"/>
 
 </LinearLayout>
