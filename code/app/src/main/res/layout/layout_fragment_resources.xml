@@ -3,11 +3,6 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="60dp"
-        android:text="Production" />
-
     <include
         android:id="@+id/resources_ll_time"
         layout="@layout/layout_item_time"/>

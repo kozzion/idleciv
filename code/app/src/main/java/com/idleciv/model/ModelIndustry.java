@@ -77,11 +77,11 @@ public class ModelIndustry {
         }
         if (mCanConsume) {
             for (ModelResourceAmount resourceAmount : mConsumedList) {
-                mGameState.mResourceStockMap.get(resourceAmount.mResourceIndex).mStock -= resourceAmount.mAmount * mPopulationIndustry;
+                mGameState.mResourceStockMap.get(resourceAmount.mResourceIndex).consume(resourceAmount.mAmount * mPopulationIndustry);
             }
 
             for (ModelResourceAmount resourceAmount : mProducedList) {
-                mGameState.mResourceStockMap.get(resourceAmount.mResourceIndex).mStock += resourceAmount.mAmount * mPopulationIndustry;
+                mGameState.mResourceStockMap.get(resourceAmount.mResourceIndex).produce(resourceAmount.mAmount * mPopulationIndustry);
             }
         }
     }

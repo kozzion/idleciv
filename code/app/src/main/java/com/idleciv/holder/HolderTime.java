@@ -1,9 +1,8 @@
 package com.idleciv.holder;
 
-import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.idleciv.R;
 import com.idleciv.model.ModelTime;
@@ -13,8 +12,14 @@ import butterknife.ButterKnife;
 
 public class HolderTime implements ModelTime.TimeListener{
 
-    @BindView(R.id.item_time_tv_progress)
-    TextView mTextProgress;
+    @BindView(R.id.item_time_bt_pause)
+    Button mButtonPause;
+
+    @BindView(R.id.item_time_bt_play)
+    Button mButtonPlay;
+
+    @BindView(R.id.item_time_bt_fast)
+    Button mButtonFast;
 
     @BindView(R.id.item_time_progress_progress)
     ProgressBar mProgressProgress;
@@ -34,6 +39,9 @@ public class HolderTime implements ModelTime.TimeListener{
         }
         mTime = time;
         mTime.addListener(this);
+        mButtonPause.setOnClickListener(v -> mTime.setSpeedPause());
+        mButtonPlay.setOnClickListener(v -> mTime.setSpeedPlay());
+        mButtonFast.setOnClickListener(v -> mTime.setSpeedFast());
     }
 
     @Override

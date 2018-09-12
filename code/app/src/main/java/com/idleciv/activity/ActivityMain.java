@@ -3,6 +3,7 @@ package com.idleciv.activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -17,7 +18,6 @@ import com.idleciv.fragment.FragmentProduction;
 import com.idleciv.fragment.FragmentResources;
 import com.idleciv.fragment.FragmentTechnology;
 import com.idleciv.model.ModelGame;
-import com.idleciv.model.ModelGameState;
 import com.idleciv.model.ModelIndustry;
 
 import java.util.ArrayList;
@@ -29,8 +29,11 @@ import butterknife.ButterKnife;
 
 public class ActivityMain extends ActivityBase implements ModelGame.GameListener{
 
-    @BindView(R.id.main_viewpager)
+    @BindView(R.id.main_vp)
     ViewPager mViewPager;
+
+    @BindView(R.id.main_tl)
+    TabLayout mTabLayout;
 
     AdapterPage mAdapter;
 
@@ -58,17 +61,27 @@ public class ActivityMain extends ActivityBase implements ModelGame.GameListener
         mFragmentConfig = new FragmentConfig();
 
         //fragement politics
-        List<Fragment> fragments = new ArrayList<>();
-        fragments.add(mFragmentResources);
-        fragments.add(mFragmentPopulation);
-        fragments.add(mFragmentProduction);
-        fragments.add(mFragmentTechnology);
-        fragments.add(mFragmentIndustryDetail);
-        fragments.add(mFragmentConfig);
+        List<Fragment> fragmentList = new ArrayList<>();
+        List<String> tabNameList = new ArrayList<>();
+        fragmentList.add(mFragmentResources);
+        tabNameList.add("res");
+        fragmentList.add(mFragmentPopulation);
+        tabNameList.add("pop");
+        fragmentList.add(mFragmentProduction);
+        tabNameList.add("Prod");
+        fragmentList.add(mFragmentTechnology);
+        tabNameList.add("tech");
+        fragmentList.add(mFragmentIndustryDetail);
+        tabNameList.add("Det");
+        fragmentList.add(mFragmentConfig);
+        tabNameList.add("Config");
 
-        mAdapter = new AdapterPage(getSupportFragmentManager(), fragments);
+
+        mAdapter = new AdapterPage(getSupportFragmentManager(), fragmentList,tabNameList);
         mViewPager.setAdapter(mAdapter);
         mViewPager.setCurrentItem(0);
+
+        mTabLayout.setupWithViewPager(mViewPager);
 
         mGame.addGameListener(this);
 

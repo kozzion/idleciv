@@ -13,6 +13,7 @@ import com.idleciv.activity.ActivityMain;
 import com.idleciv.adapter.AdapterTechnology;
 import com.idleciv.common.FragmentBase;
 import com.idleciv.holder.HolderTechnologyDetails;
+import com.idleciv.holder.HolderTechnologyItem;
 import com.idleciv.model.ModelGame;
 import com.idleciv.model.ModelGameState;
 import com.idleciv.model.ModelTechnology;
@@ -23,7 +24,7 @@ import butterknife.BindView;
  * Created by jaapo on 7-1-2018.
  */
 
-public class FragmentTechnology extends FragmentBase implements ModelGameState.GameStateListener {
+public class FragmentTechnology extends FragmentBase implements ModelGameState.GameStateListener, HolderTechnologyItem.TechnologyListener {
 
     private boolean mIsInitialized = false;
 
@@ -49,12 +50,7 @@ public class FragmentTechnology extends FragmentBase implements ModelGameState.G
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mAdapter = new AdapterTechnology(getContext(), new ModelTechnology.TechnologyListener(){
-            @Override
-            public void updateTechnology(ModelTechnology technology) {
-                setTechnology(technology);
-            }
-        });
+        mAdapter = new AdapterTechnology(getContext(), this);
 
         mRecycler.setAdapter(mAdapter);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);

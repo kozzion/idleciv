@@ -12,20 +12,27 @@ import java.util.List;
  */
 
 public class AdapterPage extends FragmentPagerAdapter {
-    private List<Fragment> fragments;
+    private List<Fragment> mFragmentList;
+    private List<String> mTabNameList;
 
-    public AdapterPage(FragmentManager fm, List<Fragment> fragments) {
+    public AdapterPage(FragmentManager fm, List<Fragment> fragments, List<String> tabNames) {
         super(fm);
-        this.fragments = fragments;
+        this.mFragmentList = fragments;
+        this.mTabNameList =tabNames;
     }
 
     @Override
     public Fragment getItem(int position) {
-        return this.fragments.get(position);
+        return this.mFragmentList.get(position);
     }
 
     @Override
     public int getCount() {
-        return this.fragments.size();
+        return this.mFragmentList.size();
+    }
+
+    @Override
+    public CharSequence getPageTitle(int position) {
+        return mTabNameList.get(position);
     }
 }

@@ -33,16 +33,19 @@ public class ModelResourceStock {
 
     public int mStock;
     public int mCapacity;
+    public int mDemand;
 
     public boolean mIsEnabled;
     public boolean mHasChanges;
 
-    public ModelResourceStock(ModelGameState gameState, int resourceIndex, int stock, boolean isEnabled)
+    public ModelResourceStock(ModelGameState gameState, int resourceIndex, int stock, int capacity, boolean isEnabled)
     {
         mGameState = gameState;
         mListenerSet = new HashSet<>();
         mResourceIndex = resourceIndex;
         mStock = stock;
+        mCapacity = capacity;
+        mDemand = 0;
         mIsEnabled = isEnabled;
     }
 
@@ -54,10 +57,42 @@ public class ModelResourceStock {
 
     public static ArrayList<ModelResourceStock> getResourceList(ModelGameState gameState) {
         ArrayList<ModelResourceStock> resourceList = new ArrayList<>();
-        resourceList.add(new ModelResourceStock(gameState, Food, 0, true));
-        resourceList.add(new ModelResourceStock(gameState, Lumber, 0, false));
-        resourceList.add(new ModelResourceStock(gameState, Stone, 0, false));
+        resourceList.add(new ModelResourceStock(gameState, Food, 0, 100,true));
+        resourceList.add(new ModelResourceStock(gameState, Lumber, 0, 100,false));
+        resourceList.add(new ModelResourceStock(gameState, Stone, 0, 100,false));
         return resourceList;
+    }
+
+    public void clearDemand(){
+        mDemand = 0;
+    }
+
+    public void addDemand(int amount){
+        mDemand +=amount;
+    }
+
+    public boolean canSupply(){
+        return mDemand <= mStock;
+    }
+
+
+    public void consume(int amount){
+        if(mStock < amount){
+            throw new RuntimeException("canSupply check failed");
+        } else {
+            mStock -= amount;
+            mHasChanges = true;
+        }
+    }
+
+    public void produce(int amount){
+        if(mStock != mCapacity) {
+            mStock += amount;
+            if (mCapacity < mStock ){
+                mStock = mCapacity;
+            }
+            mHasChanges = true;
+        }
     }
 
     public static String getName(int resourceIndex)
@@ -94,6 +129,7 @@ public class ModelResourceStock {
                 listener.updateResourceStockUI();
             }
         }
+        mHasChanges = false;
     }
 
     public void addListener(Listener listener) {

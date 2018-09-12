@@ -1,13 +1,12 @@
 package com.idleciv.model;
 
-import android.animation.TimeAnimator;
-import android.util.Log;
-
-import com.idleciv.holder.HolderTime;
-
 import java.util.HashSet;
 
 public class ModelTime {
+
+    public static final double YearProgressPerSecondPause = 0.0;
+    public static final double YearProgressPerSecondPlay = 10.0;
+    public static final double YearProgressPerSecondFast = 40.0;
 
     public transient ModelGameState mGameState;
     public transient HashSet<TimeListener> mTimeListenerSet;
@@ -21,12 +20,27 @@ public class ModelTime {
         mTimeListenerSet = new HashSet<>();
         mYearProgress = 0;
         mYearProgressMax = 100;
-        mYearProgressPerSecond = 5;
+        mYearProgressPerSecond = YearProgressPerSecondPlay;
     }
 
     public void validate(ModelGameState gameState) {
         mGameState = gameState;
         mTimeListenerSet = new HashSet<>();
+    }
+
+    public void setSpeedPause()
+    {
+        mYearProgressPerSecond = YearProgressPerSecondPause;
+    }
+
+    public void setSpeedPlay()
+    {
+        mYearProgressPerSecond = YearProgressPerSecondPlay;
+    }
+
+    public void setSpeedFast()
+    {
+        mYearProgressPerSecond = YearProgressPerSecondFast;
     }
 
     public void updateState(double elapsedSeconds) {

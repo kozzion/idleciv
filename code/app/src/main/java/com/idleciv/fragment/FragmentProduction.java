@@ -31,9 +31,6 @@ public class FragmentProduction extends FragmentBase implements ModelGameState.G
     @BindView(R.id.production_recycler)
     RecyclerView mRecycler;
 
-    @BindView(R.id.production_button_reset)
-    Button mButtonReset;
-
     @BindView(R.id.production_ll_time)
     View mLayoutTime;
 

@@ -17,8 +17,7 @@ import butterknife.ButterKnife;
  * Created by jaapo on 8-1-2018.
  */
 
-public class HolderResourceAmount extends RecyclerView.ViewHolder {
-
+public class HolderResourceAmount extends RecyclerView.ViewHolder implements ModelResourceStock.Listener{
 
     @BindView(R.id.item_resource_amount_image_icon)
     ImageView mImageIcon;
@@ -31,6 +30,7 @@ public class HolderResourceAmount extends RecyclerView.ViewHolder {
 
     private View mRootView;
     private ModelResourceAmount mResourceAmount;
+    private ModelResourceStock mResourceStock;
 
     public HolderResourceAmount(View rootView) {
         super(rootView);
@@ -40,17 +40,21 @@ public class HolderResourceAmount extends RecyclerView.ViewHolder {
 
     public void bind(ModelResourceAmount resourceAmount) {
         mResourceAmount = resourceAmount;
+        //Dirty hack
+        mResourceStock = ((ActivityMain)mRootView.getContext()).mGame.mGameState.mResourceStockMap.get(mResourceAmount.mResourceIndex);
+
         mTextName.setText(ModelResourceStock.getName(mResourceAmount.mResourceIndex));
         mImageIcon.setImageResource(ModelResourceStock.getIcon(mResourceAmount.mResourceIndex));
+        mResourceStock.addListener(this);
+    }
 
-        //Dirty hack
-        int stock = (int)((ActivityMain)mRootView.getContext()).mGame.mGameState.mResourceStockMap.get(mResourceAmount.mResourceIndex).mStock;
-        mTextStock.setText(Integer.toString(stock) + "/" + Integer.toString(mResourceAmount.mAmount));
+    public void unbind(){
+        mResourceStock.removeListener(this);
+    }
 
-    /*    mRootView.setOnClickListener(v -> {
-            ((ActivityMain)mRootView.getContext()).showIndustryDetails(industry);
-
-        });*/
+    @Override
+    public void updateResourceStockUI() {
+        mTextStock.setText(Integer.toString(mResourceStock.mStock) + "/" + Integer.toString(mResourceAmount.mAmount));
 
     }
 }

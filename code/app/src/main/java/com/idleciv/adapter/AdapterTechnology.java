@@ -18,9 +18,9 @@ public class AdapterTechnology extends RecyclerView.Adapter<HolderTechnologyItem
     private static final int TYPE_ITEM = 0;
 
     private List<ModelTechnology> mData;
-    private ModelTechnology.TechnologyListener mListener;
+    private HolderTechnologyItem.TechnologyListener mListener;
 
-    public AdapterTechnology(@NonNull Context context, ModelTechnology.TechnologyListener listener) {
+    public AdapterTechnology(@NonNull Context context, HolderTechnologyItem.TechnologyListener listener) {
         this.mData = new ArrayList<>();
         mListener = listener;
     }

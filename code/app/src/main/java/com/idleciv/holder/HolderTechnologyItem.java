@@ -29,9 +29,9 @@ public class HolderTechnologyItem extends RecyclerView.ViewHolder {
 
     private View mRootView;
     private ModelTechnology mTechnology;
-    private ModelTechnology.TechnologyListener mListener;
+    private TechnologyListener mListener;
 
-    public HolderTechnologyItem(View rootView, ModelTechnology.TechnologyListener listener) {
+    public HolderTechnologyItem(View rootView, TechnologyListener listener) {
         super(rootView);
         mRootView = rootView;
         mListener = listener;
@@ -44,10 +44,14 @@ public class HolderTechnologyItem extends RecyclerView.ViewHolder {
         mTextName.setText(ModelTechnology.getName(mTechnology.mTechnologyIndex));
         mDescription.setText(ModelTechnology.getDescription(mTechnology.mTechnologyIndex));
         mRootView.setOnClickListener(v -> {
-            mListener.updateTechnology(mTechnology);
+            mListener.setTechnology(mTechnology);
         });
         mResearch.setOnClickListener(v -> {
             mTechnology.research();
         });
+    }
+
+    public interface TechnologyListener{
+        void setTechnology(ModelTechnology technology);
     }
 }

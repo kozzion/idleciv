@@ -1,7 +1,5 @@
 package com.idleciv.model;
 
-import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -76,11 +74,16 @@ public class ModelGameState {
         } else {
             //Log.e("validate", "validating");
             mTime.validate(this);
+            for (ModelResourceStock resourceStock: mResourceStockMap.values()) {
+                resourceStock.validate(this);
+            }
+
             for (ModelIndustry industry : mIndustryMap.values()) {
                 industry.validate(this);
             }
-            for (ModelResourceStock resourceStock: mResourceStockMap.values()) {
-                resourceStock.validate(this);
+
+            for (ModelTechnology technology: mTechnologyMap.values()) {
+                technology.validate(this);
             }
             mHasChanges = true;
             return this;
@@ -214,8 +217,14 @@ public class ModelGameState {
         }
 
         mTime.updateUI();
+        for (ModelResourceStock resourceStock: mResourceStockMap.values()) {
+            resourceStock.updateUI();
+        }
         for (ModelIndustry industry: mIndustryMap.values()) {
             industry.updateUI();
+        }
+        for (ModelTechnology technology: mTechnologyMap.values()) {
+            technology.updateUI();
         }
     }
 
