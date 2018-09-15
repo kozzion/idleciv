@@ -1,8 +1,5 @@
 package com.idleciv.fragment;
 
-import android.os.Bundle;
-import android.support.annotation.CallSuper;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -10,21 +7,21 @@ import android.view.View;
 
 import com.idleciv.R;
 import com.idleciv.adapter.AdapterTechnology;
-import com.idleciv.common.FragmentBase;
 import com.idleciv.holder.HolderTechnologyDetails;
 import com.idleciv.holder.HolderTechnologyItem;
-import com.idleciv.model.ModelGameState;
 import com.idleciv.model.ModelEpochState;
 import com.idleciv.model.ModelTechnology;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created by jaapo on 7-1-2018.
  */
 
-public class FragmentTechnology extends FragmentBase implements ModelEpochState.GameStateListener, HolderTechnologyItem.TechnologyListener {
+public class FragmentTechnology implements ModelEpochState.EpochStateListener, HolderTechnologyItem.TechnologyListener {
 
+    public static final String TAG = FragmentTechnology.class.getName();
     private boolean mIsInitialized = false;
 
     @BindView(R.id.technology_rv_availeble)
@@ -34,41 +31,29 @@ public class FragmentTechnology extends FragmentBase implements ModelEpochState.
     View mLayoutDetails;
 
     AdapterTechnology mAdapter;
-    ModelGameState mGame;
+
     ModelEpochState mGameState;
 
     private HolderTechnologyDetails mDetailsHolder;
 
 
-    @Override
-    protected int getLayoutRes() {
-        return R.layout.layout_fragment_technology;
-    }
+    public View mRootView;
 
-    @CallSuper
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        mAdapter = new AdapterTechnology(getContext(), this);
+    public FragmentTechnology(View view) {
+        mRootView = view;
+        ButterKnife.bind(this, mRootView);
+        mAdapter = new AdapterTechnology(mRootView.getContext(), this);
 
         mRecycler.setAdapter(mAdapter);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(mRootView.getContext(), LinearLayoutManager.VERTICAL, false);
         layoutManager.setAutoMeasureEnabled(true);
         mRecycler.setLayoutManager(layoutManager);
 
         mDetailsHolder = new HolderTechnologyDetails(mLayoutDetails);
         mIsInitialized = true;
         if(mGameState != null) {
-            updateGameStateUI();
+            updateEpochStateUI();
         }
-    }
-
-    @Override
-    public void onDestroyView()
-    {
-        super.onDestroyView();
-        //Log.e(TAG, "onDestroyView: ");
-        mIsInitialized = false;
     }
 
     public void setTechnology(ModelTechnology technology) {
@@ -76,8 +61,8 @@ public class FragmentTechnology extends FragmentBase implements ModelEpochState.
     }
 
     @Override
-    public void updateGameStateUI() {
-        Log.e(TAG, "updateGameStateUI: ");
+    public void updateEpochStateUI() {
+        Log.e(TAG, "updateEpochStateUI: ");
         if(mIsInitialized) {
             mAdapter.setData(mGameState.getAvailebleTechnologyList());
         }

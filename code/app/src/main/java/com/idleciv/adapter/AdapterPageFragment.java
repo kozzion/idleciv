@@ -11,12 +11,12 @@ import java.util.List;
 /**
  * Created by jaapo on 7-1-2018.
  */
-
-public class AdapterPage extends FragmentPagerAdapter {
+@Deprecated
+public class AdapterPageFragment extends FragmentPagerAdapter {
     private List<Fragment> mFragmentList;
     private List<String> mTabNameList;
 
-    public AdapterPage(FragmentManager fm) {
+    public AdapterPageFragment(FragmentManager fm) {
         super(fm);
         this.mFragmentList = new ArrayList<>();
         this.mTabNameList =new ArrayList<>();

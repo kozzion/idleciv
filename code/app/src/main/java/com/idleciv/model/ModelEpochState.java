@@ -20,7 +20,7 @@ public class ModelEpochState {
     //TODO this needs to happen one level higher
 
 
-    private transient  HashSet<ModelEpochState.GameStateListener> mListenerSet;
+    private transient  HashSet<EpochStateListener> mListenerSet;
 
     public boolean mHasChanges; // for research
 
@@ -170,12 +170,12 @@ public class ModelEpochState {
     }
 
 
-    public void addListener(ModelEpochState.GameStateListener listener) {
+    public void addListener(EpochStateListener listener) {
         mListenerSet.add(listener);
-        listener.updateGameStateUI();
+        listener.updateEpochStateUI();
     }
 
-    public void removeListener(ModelEpochState.GameStateListener listener) {
+    public void removeListener(EpochStateListener listener) {
         mListenerSet.remove(listener);
     }
 
@@ -222,8 +222,8 @@ public class ModelEpochState {
 
     public void updateUI() {
         if(mHasChanges){
-            for (ModelEpochState.GameStateListener listener: mListenerSet) {
-                listener.updateGameStateUI();
+            for (EpochStateListener listener: mListenerSet) {
+                listener.updateEpochStateUI();
             }
             mHasChanges = false;
         }
@@ -266,7 +266,7 @@ public class ModelEpochState {
         }
     }
 
-    public interface GameStateListener {
-        void updateGameStateUI();
+    public interface EpochStateListener {
+        void updateEpochStateUI();
     }
 }

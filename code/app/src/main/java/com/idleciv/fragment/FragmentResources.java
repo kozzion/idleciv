@@ -1,9 +1,6 @@
 package com.idleciv.fragment;
 
 
-import android.os.Bundle;
-import android.support.annotation.CallSuper;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -11,14 +8,15 @@ import android.view.View;
 
 import com.idleciv.R;
 import com.idleciv.adapter.AdapterResourceStock;
-import com.idleciv.common.FragmentBase;
 import com.idleciv.holder.HolderTime;
 import com.idleciv.model.ModelEpochState;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
-public class FragmentResources extends FragmentBase implements ModelEpochState.GameStateListener {
+public class FragmentResources implements ModelEpochState.EpochStateListener {
 
+    public static final String TAG = FragmentResources.class.getName();
     private boolean mIsInitialized = false;
 
     @BindView(R.id.resources_ll_time)
@@ -33,19 +31,14 @@ public class FragmentResources extends FragmentBase implements ModelEpochState.G
     public ModelEpochState mGameState;
 
 
-    @Override
-    protected int getLayoutRes() {
-        return R.layout.layout_fragment_resources;
-    }
+    public View mRootView;
 
-    @CallSuper
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        //Log.e(TAG, "onViewCreated: ");
-        super.onViewCreated(view, savedInstanceState);
-        mAdapter = new AdapterResourceStock(getContext());
+    public FragmentResources(View view) {
+        mRootView = view;
+        ButterKnife.bind(this, mRootView);
+        mAdapter = new AdapterResourceStock(mRootView.getContext());
         mRecycler.setAdapter(mAdapter);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(mRootView.getContext(), LinearLayoutManager.VERTICAL, false);
         layoutManager.setAutoMeasureEnabled(true);
         mRecycler.setLayoutManager(layoutManager);
 //        mAdapter.setData(mEpochState.getEnabledIndustryList());
@@ -54,21 +47,21 @@ public class FragmentResources extends FragmentBase implements ModelEpochState.G
 
         mIsInitialized = true;
         if (mGameState != null) {
-            updateGameStateUI();
+            updateEpochStateUI();
         }
     }
 
-    @Override
+    /*@Override
     public void onDestroyView() {
         super.onDestroyView();
         //Log.e(TAG, "onDestroyView: ");
         mIsInitialized = false;
-    }
+    }*/
 
 
     @Override
-    public void updateGameStateUI() {
-        Log.e(TAG, "updateGameStateUI: ");
+    public void updateEpochStateUI() {
+        Log.e(TAG, "updateEpochStateUI: ");
         if (mIsInitialized) {
             mHolderTime.bind(mGameState.mTime);
             mAdapter.setData(mGameState.getEnabledResourceList());

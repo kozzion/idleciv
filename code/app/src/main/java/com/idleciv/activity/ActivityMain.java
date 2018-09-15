@@ -9,16 +9,17 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import com.idleciv.R;
-import com.idleciv.adapter.AdapterPage;
+import com.idleciv.adapter.AdapterPageView;
 import com.idleciv.common.ActivityBase;
 import com.idleciv.fragment.FragmentConfig;
-import com.idleciv.fragment.FragmentIndustryDetail;
 import com.idleciv.fragment.FragmentPopulation;
 import com.idleciv.fragment.FragmentProduction;
 import com.idleciv.fragment.FragmentResources;
@@ -41,7 +42,7 @@ public class ActivityMain extends ActivityBase implements ModelGameState.GameSta
     @BindView(R.id.main_tl)
     TabLayout mTabLayout;
 
-    AdapterPage mAdapter;
+    AdapterPageView mAdapter;
 
     public ModelGameState mGameState;
 
@@ -49,33 +50,36 @@ public class ActivityMain extends ActivityBase implements ModelGameState.GameSta
     FragmentPopulation mFragmentPopulation;
     FragmentTechnology mFragmentTechnology;
     FragmentProduction mFragmentProduction;
-    FragmentIndustryDetail mFragmentIndustryDetail;
     FragmentConfig mFragmentConfig;
+
+    private Thread mThread;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //mFragmentResources = new FragmentResources();
-        //mFragmentPopulation = new FragmentPopulation();
-        //mFragmentTechnology = new FragmentTechnology();
-        //mFragmentProduction = new FragmentProduction();
-        //mFragmentIndustryDetail = new FragmentIndustryDetail();
-        //mFragmentConfig = new FragmentConfig();
-
-        //fragement politics
 
 
-        mAdapter = new AdapterPage(getSupportFragmentManager());
+        mAdapter = new AdapterPageView();
         mViewPager.setAdapter(mAdapter);
         mTabLayout.setupWithViewPager(mViewPager);
 
-        //Load and bind data
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        mFragmentResources = new FragmentResources(getLayoutInflater().inflate(R.layout.layout_fragment_resources, null));
+        mFragmentPopulation = new FragmentPopulation(getLayoutInflater().inflate(R.layout.layout_fragment_population, null));
+        mFragmentProduction = new FragmentProduction(getLayoutInflater().inflate(R.layout.layout_fragment_production, null));
+        mFragmentTechnology = new FragmentTechnology(getLayoutInflater().inflate(R.layout.layout_fragment_technology, null));
+        mFragmentConfig = new FragmentConfig(getLayoutInflater().inflate(R.layout.layout_fragment_config, null));
         load();
-        mGameState.addGameListener(this);
 
         //Start update thread
-        new Thread(() -> {
+        mThread = new Thread(() -> {
             long time = System.currentTimeMillis();
             while (true)
             {
@@ -95,14 +99,15 @@ public class ActivityMain extends ActivityBase implements ModelGameState.GameSta
                     }
                 });
             }
-        }).start();
+        });
+        mThread.start();
     }
-
 
     @Override
     public void onPause() {
         super.onPause();
-        save();
+        //save();
+        mThread.interrupt();
     }
 
     @Override
@@ -114,20 +119,12 @@ public class ActivityMain extends ActivityBase implements ModelGameState.GameSta
         }
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        load();
-    }
+
 
     @Override
     public void onContentChanged() {
         super.onContentChanged();
         ButterKnife.bind(this);
-
-        //FragmentManager manager = getSupportFragmentManager();
-        //FragmentTransaction transaction = manager.beginTransaction();
-        //transaction.apply(R.id.fragment_container, fragment, fragmentKey);
     }
 
     public void showPopup(String message){
@@ -185,60 +182,44 @@ public class ActivityMain extends ActivityBase implements ModelGameState.GameSta
 
     @Override
     public void updateGameStateUI() {
-        Log.e(TAG, "updateGameStateUI");
+        Log.e(TAG, "updateEpochStateUI");
         showUnlockedTabs();
-
-//        mFragmentResources.bind(mGameState.mEpochState);
-//        mFragmentPopulation.bind(mGameState.mEpochState);
-//        mFragmentProduction.bind(mGameState.mEpochState);
-//        mFragmentTechnology.bind(mGameState.mEpochState);
-//        mFragmentIndustryDetail.bind(mGameState.mEpochState);
-//        mFragmentConfig.bind(mGameState.mEpochState);
+        mFragmentResources.bind(mGameState.mEpochState);
+        mFragmentPopulation.bind(mGameState.mEpochState);
+        mFragmentProduction.bind(mGameState.mEpochState);
+        mFragmentTechnology.bind(mGameState.mEpochState);
+        mFragmentConfig.bind(mGameState.mEpochState);
     }
 
     private void showUnlockedTabs() {
 
-
-        List<Fragment> fragmentList = new ArrayList<>();
+        List<View> viewList = new ArrayList<>();
         List<String> tabNameList = new ArrayList<>();
 
-        mFragmentResources = new FragmentResources();
-        mFragmentResources.bind(mGameState.mEpochState);
-        fragmentList.add(mFragmentResources);
-        tabNameList.add("res");
+        viewList.add(mFragmentResources.mRootView);
+        tabNameList.add("RES");
 
         if(mGameState.mUnlockedPopulation) {
-            mFragmentPopulation = new FragmentPopulation();
-            mFragmentPopulation.bind(mGameState.mEpochState);
-            fragmentList.add(mFragmentPopulation);
-            tabNameList.add("pop");
+            viewList.add(mFragmentPopulation.mRootView);
+            tabNameList.add("POP");
         }
+
         if(mGameState.mUnlockedProduction) {
-            mFragmentProduction = new FragmentProduction();
-            mFragmentProduction.bind(mGameState.mEpochState);
-            fragmentList.add(mFragmentProduction);
+            viewList.add(mFragmentProduction.mRootView);
             tabNameList.add("Prod");
         }
-
-
         // TODO add expansion tab here
         //fragmentList.add(mFragmentIndustryDetail);
         //tabNameList.add("Det");
 
         if(mGameState.mUnlockedTechnology) {
-            fragmentList.add(mFragmentTechnology);
+            viewList.add(mFragmentTechnology.mRootView);
             tabNameList.add("tech");
         }
 
-        mFragmentConfig = new FragmentConfig();
-        mFragmentConfig.bind(mGameState.mEpochState);
-        fragmentList.add(mFragmentConfig);
+        viewList.add(mFragmentConfig.mRootView);
         tabNameList.add("Config");
-
-
-        //mAdapter = new AdapterPage(getSupportFragmentManager());
-        //mViewPager.setAdapter(mAdapter);
-        mAdapter.setData(fragmentList,tabNameList);
+        mAdapter.setData(mViewPager, viewList,tabNameList);
     }
 
 }

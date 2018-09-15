@@ -1,19 +1,16 @@
 package com.idleciv.fragment;
 
-import android.os.Bundle;
-import android.support.annotation.CallSuper;
-import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.Button;
 
 import com.idleciv.R;
 import com.idleciv.activity.ActivityMain;
-import com.idleciv.common.FragmentBase;
 import com.idleciv.model.ModelEpochState;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
-public class FragmentConfig extends FragmentBase implements ModelEpochState.GameStateListener {
+public class FragmentConfig  implements ModelEpochState.EpochStateListener {
 
     private boolean mIsInitialized = false;
 
@@ -25,20 +22,16 @@ public class FragmentConfig extends FragmentBase implements ModelEpochState.Game
 
     public ModelEpochState mGameState;
 
-    @Override
-    protected int getLayoutRes() {
-        return R.layout.layout_fragment_config;
-    }
-
-    @CallSuper
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    public View mRootView;
+    public FragmentConfig(View view) {
+        mRootView = view;
+        ButterKnife.bind(this, mRootView);
         mIsInitialized = true;
         if (mGameState != null) {
-            updateGameStateUI();
+            updateEpochStateUI();
         }
     }
+/*
 
     @Override
     public void onDestroyView() {
@@ -46,6 +39,7 @@ public class FragmentConfig extends FragmentBase implements ModelEpochState.Game
         //Log.e(TAG, "onDestroyView: ");
         mIsInitialized = false;
     }
+*/
 
     public void bind(ModelEpochState gameState) {
         //Unbind previous
@@ -58,14 +52,14 @@ public class FragmentConfig extends FragmentBase implements ModelEpochState.Game
     }
 
     @Override
-    public void updateGameStateUI() {
+    public void updateEpochStateUI() {
         if (mIsInitialized) {
             mButtonResetGame.setOnClickListener(v -> {
-                ((ActivityMain)getContext()).mGameState.mActivityMain.resetGameState();
+                ((ActivityMain)mRootView.getContext()).mGameState.mActivityMain.resetGameState();
             });
 
             mButtonResetEpoch.setOnClickListener(v -> {
-                ((ActivityMain)getContext()).mGameState.resetEpoch();
+                ((ActivityMain)mRootView.getContext()).mGameState.resetEpoch();
             });
         }
     }
