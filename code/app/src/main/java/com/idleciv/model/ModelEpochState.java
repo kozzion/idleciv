@@ -15,15 +15,11 @@ public class ModelEpochState {
 
     public static final String TAG = ModelEpochState.class.getName();
 
-    public ModelGameState mGameState;
-
-    //TODO this needs to happen one level higher
-
-
+    public transient ModelGameState mGameState;
     private transient  HashSet<EpochStateListener> mListenerSet;
 
-    public boolean mHasChanges; // for research
 
+    //TODO move this to time
     public int mPopulationTotal;
     public int mPopulationFree;
     public ArrayList<ModelCost> mPopulationCostList;
@@ -36,8 +32,7 @@ public class ModelEpochState {
     public ModelObjective mObjective;
     public ModelTime mTime;
 
-    public List<String> mNotificationQueue;
-
+    public boolean mHasChanges; // for research
 
 
     public ModelEpochState(ModelGameState gameState)

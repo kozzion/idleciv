@@ -135,10 +135,10 @@ public class ModelIndustry {
         industryList.add(
                 new ModelIndustry( gameState, GatherFood,
                         new ModelResourceAmount[]{
-                                new ModelResourceAmount(ModelResourceStock.Food, 10)
+                                new ModelResourceAmount(ModelResourceStock.Food, 5)
                         },
                         new ModelResourceAmount[]{
-                                new ModelResourceAmount(ModelResourceStock.Food, 20)
+                                new ModelResourceAmount(ModelResourceStock.Food, 10)
                         },
                         1,
                         R.drawable.industry_gather_food,
@@ -147,10 +147,10 @@ public class ModelIndustry {
         industryList.add(
                 new ModelIndustry(gameState, GatherLumber,
                         new ModelResourceAmount[]{
-                                new ModelResourceAmount(ModelResourceStock.Food, 10)
+                                new ModelResourceAmount(ModelResourceStock.Food, 5)
                         },
                         new ModelResourceAmount[]{
-                                new ModelResourceAmount(ModelResourceStock.Lumber, 10)
+                                new ModelResourceAmount(ModelResourceStock.Lumber, 5)
                         },
                         1,
                         R.drawable.industry_gather_lumber,
@@ -159,48 +159,78 @@ public class ModelIndustry {
         industryList.add(
                 new ModelIndustry(gameState, GatherGrain,
                         new ModelResourceAmount[]{
-                                new ModelResourceAmount(ModelResourceStock.Food, 10)
+                                new ModelResourceAmount(ModelResourceStock.Food, 5)
                         },
                         new ModelResourceAmount[]{
-                                new ModelResourceAmount(ModelResourceStock.Grain, 10)
+                                new ModelResourceAmount(ModelResourceStock.Grain, 5)
                         },
                         1,
                         R.drawable.industry_gather_grain,
                         R.string.industry_gather_grain_name));
 
         industryList.add(
-                new ModelIndustry(gameState, GatherStone,
-                        new ModelResourceAmount[]{
-                                new ModelResourceAmount(ModelResourceStock.Food, 10)
-                        },
-                        new ModelResourceAmount[]{
-                                new ModelResourceAmount(ModelResourceStock.Stone, 10)
-                        },
-                        1,
-                        R.drawable.industry_gather_stone,
-                        R.string.industry_gather_stone_name));
-
-        industryList.add(
                 new ModelIndustry(gameState, CookGrain,
                         new ModelResourceAmount[]{
-                                new ModelResourceAmount(ModelResourceStock.Food, 10),
+                                new ModelResourceAmount(ModelResourceStock.Food, 5),
                                 new ModelResourceAmount(ModelResourceStock.Grain, 5),
                                 new ModelResourceAmount(ModelResourceStock.Lumber, 5)
                         },
                         new ModelResourceAmount[]{
-                                new ModelResourceAmount(ModelResourceStock.Food, 20)
+                                new ModelResourceAmount(ModelResourceStock.Food, 5)
                         },
                         2,
                         R.drawable.industry_cook_grain,
                         R.string.industry_cook_grain_name));
 
         industryList.add(
-                new ModelIndustry(gameState, WoodCutting,
+                new ModelIndustry(gameState, GatherFibre,
                         new ModelResourceAmount[]{
-                                new ModelResourceAmount(ModelResourceStock.Food, 10)
+                                new ModelResourceAmount(ModelResourceStock.Food, 5)
                         },
                         new ModelResourceAmount[]{
-                                new ModelResourceAmount(ModelResourceStock.Lumber, 20)
+                                new ModelResourceAmount(ModelResourceStock.Fibre, 5)
+                        },
+                        1,
+                        R.drawable.industry_gather_fibre,
+                        R.string.industry_gather_fibre_name));
+
+
+        industryList.add(
+                new ModelIndustry(gameState, RopeMaking,
+                        new ModelResourceAmount[]{
+                                new ModelResourceAmount(ModelResourceStock.Food, 5),
+                                new ModelResourceAmount(ModelResourceStock.Fibre, 5)
+                        },
+                        new ModelResourceAmount[]{
+                                new ModelResourceAmount(ModelResourceStock.Rope, 1)
+                        },
+                        1,
+                        R.drawable.placeholder,
+                        R.string.industry_rope_making_name));
+
+
+
+        industryList.add(
+                new ModelIndustry(gameState, GatherStone,
+                        new ModelResourceAmount[]{
+                                new ModelResourceAmount(ModelResourceStock.Food, 5)
+                        },
+                        new ModelResourceAmount[]{
+                                new ModelResourceAmount(ModelResourceStock.Stone, 5)
+                        },
+                        1,
+                        R.drawable.industry_gather_stone,
+                        R.string.industry_gather_stone_name));
+
+
+
+        industryList.add(
+                new ModelIndustry(gameState, WoodCutting,
+                        new ModelResourceAmount[]{
+                                new ModelResourceAmount(ModelResourceStock.Food, 5)
+                        },
+                        new ModelResourceAmount[]{
+                                new ModelResourceAmount(ModelResourceStock.Lumber, 5)
                         },
                         1,
                         R.drawable.industry_wood_cutting,
@@ -209,8 +239,8 @@ public class ModelIndustry {
         industryList.add(
                 new ModelIndustry(gameState, SawPlanks,
                         new ModelResourceAmount[]{
-                                new ModelResourceAmount(ModelResourceStock.Food, 10),
-                                new ModelResourceAmount(ModelResourceStock.Lumber, 10)
+                                new ModelResourceAmount(ModelResourceStock.Food, 5),
+                                new ModelResourceAmount(ModelResourceStock.Lumber, 5)
                         },
                         new ModelResourceAmount[]{
                                 new ModelResourceAmount(ModelResourceStock.Planks, 10)
@@ -222,8 +252,8 @@ public class ModelIndustry {
         industryList.add(
                 new ModelIndustry(gameState, OreMining,
                         new ModelResourceAmount[]{
-                                new ModelResourceAmount(ModelResourceStock.Food, 10),
-                                new ModelResourceAmount(ModelResourceStock.Planks, 10)
+                                new ModelResourceAmount(ModelResourceStock.Food, 5),
+                                new ModelResourceAmount(ModelResourceStock.Planks, 5)
                         },
                         new ModelResourceAmount[]{
                                 new ModelResourceAmount(ModelResourceStock.Ore, 1)
@@ -235,10 +265,10 @@ public class ModelIndustry {
         industryList.add(
                 new ModelIndustry(gameState, ShipMaking,
                         new ModelResourceAmount[]{
-                                new ModelResourceAmount(ModelResourceStock.Food, 10),
-                                new ModelResourceAmount(ModelResourceStock.Planks, 10),
-                                new ModelResourceAmount(ModelResourceStock.Cloth, 10),
-                                new ModelResourceAmount(ModelResourceStock.Rope, 10)
+                                new ModelResourceAmount(ModelResourceStock.Food, 5),
+                                new ModelResourceAmount(ModelResourceStock.Planks, 5),
+                                new ModelResourceAmount(ModelResourceStock.Cloth, 5),
+                                new ModelResourceAmount(ModelResourceStock.Rope, 5)
                         },
                         new ModelResourceAmount[]{
                                 new ModelResourceAmount(ModelResourceStock.Ship, 1)

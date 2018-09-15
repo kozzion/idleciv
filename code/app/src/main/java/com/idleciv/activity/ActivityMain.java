@@ -6,10 +6,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Toast;
 
@@ -52,7 +50,7 @@ public class ActivityMain extends ActivityBase implements ModelGameState.GameSta
     FragmentProduction mFragmentProduction;
     FragmentConfig mFragmentConfig;
 
-    private Thread mThread;
+    private Thread mModelThread;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,7 +77,7 @@ public class ActivityMain extends ActivityBase implements ModelGameState.GameSta
         load();
 
         //Start update thread
-        mThread = new Thread(() -> {
+        mModelThread = new Thread(() -> {
             long time = System.currentTimeMillis();
             while (true)
             {
@@ -91,7 +89,19 @@ public class ActivityMain extends ActivityBase implements ModelGameState.GameSta
                 long newTime = System.currentTimeMillis();
                 mGameState.updateState((newTime - time)/1000.0);
                 time = newTime;
+            }
+        });
+        mModelThread.start();
 
+        Thread mUIThread = new Thread(() -> {
+            long time = System.currentTimeMillis();
+            while (true)
+            {
+                try {
+                    Thread.sleep(50);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 new Handler(Looper.getMainLooper()).post(new Runnable() {
                     @Override
                     public void run() {
@@ -100,14 +110,14 @@ public class ActivityMain extends ActivityBase implements ModelGameState.GameSta
                 });
             }
         });
-        mThread.start();
+        mUIThread.start();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        //save();
-        mThread.interrupt();
+        save();
+        mModelThread.interrupt();
     }
 
     @Override

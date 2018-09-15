@@ -36,4 +36,6 @@
     <string name="technology_hunting_description">Let the hunt begin!</string>
     <string name="technology_hunting_name">Hunting</string>
     <string name="resource_stone_weapon">Stone weapon</string>
+    <string name="industry_gather_fibre_name">Gather fibre</string>
+    <string name="industry_rope_making_name">Rope making</string>
 </resources>
