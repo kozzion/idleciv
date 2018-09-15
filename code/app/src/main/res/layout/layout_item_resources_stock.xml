@@ -2,66 +2,82 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="100dp"
+    android:layout_height="70dp"
     android:background="@drawable/background_item_industry"
-    android:layout_margin="5dp"
-    android:padding="5dp">
-
-    <ImageView
-        android:id="@+id/item_resource_stock_iv_icon"
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        android:layout_height="wrap_content" />
+    android:layout_marginTop="4dp"
+    android:layout_marginLeft="4dp"
+    android:layout_marginRight="4dp"
+    android:padding="4dp">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:orientation="vertical"
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        android:layout_height="match_parent">
+        android:layout_width="46dp"
+        android:layout_height="62dp">
 
         <TextView
-            android:id="@+id/item_resource_stock_tv_consumption"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:id="@+id/item_resource_stock_tv_name"
+            android:layout_width="46dp"
+            android:layout_height="18dp"
+            android:textColor="@color/ICBlack"
+            android:gravity="center"/>
 
-        <TextView
-            android:id="@+id/item_resource_stock_tv_production"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+        <ImageView
+            android:id="@+id/item_resource_stock_iv_icon"
+            android:layout_width="46dp"
+            android:layout_height="46dp"/>
 
     </LinearLayout>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:orientation="vertical"
+        android:layout_width="30dp"
+        android:layout_height="62dp">
+
+        <TextView
+            android:id="@+id/item_resource_stock_tv_production"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_height="0dp"
+            android:textColor="@color/ICBlack"
+            android:gravity="center"/>
+
+        <TextView
+            android:id="@+id/item_resource_stock_tv_demand"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_height="0dp"
+            android:textColor="@color/ICBlack"
+            android:gravity="center"/>
+
+    </LinearLayout>
+
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="0dp"
         android:layout_weight="3"
-        android:layout_height="match_parent">
+        android:layout_height="62dp">
 
-        <TextView
-            android:id="@+id/item_resource_stock_tv_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
 
-        <TextView
-            android:id="@+id/item_resource_stock_tv_stock"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
 
         <ProgressBar style="?android:attr/progressBarStyleHorizontal"
             android:id="@+id/item_resource_stock_pb_capacity"
 
 
             android:progressDrawable="@drawable/custom_progress_bar_horizontal"
-            android:minHeight="10dp"
-            android:maxHeight="20dp"
+            android:minHeight="62dp"
+            android:maxHeight="62dp"
 
             android:layout_width="match_parent"
-            android:layout_height="20dp" />
+            android:layout_height="match_parent" />
+
 
         <TextView
-            android:id="@+id/item_resource_stock_tv_capacity"
+            android:id="@+id/item_resource_stock_tv_stock"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
+            android:layout_height="62dp"
+            android:textColor="@color/ICWhite"
+            android:textSize="20sp"
+            android:gravity="center"/>
+
+    </FrameLayout>
 
 </LinearLayout>

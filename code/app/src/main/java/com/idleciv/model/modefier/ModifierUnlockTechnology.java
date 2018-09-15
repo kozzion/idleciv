@@ -1,11 +1,11 @@
 package com.idleciv.model.modefier;
 
-import com.idleciv.model.IModelModifier;
-import com.idleciv.model.ModelGameState;
-import com.idleciv.model.ModelIndustry;
-import com.idleciv.model.ModelTechnology;
+import android.content.Context;
 
-public class ModifierUnlockTechnology extends IModelModifier {
+import com.idleciv.model.ModelModifier;
+import com.idleciv.model.ModelEpochState;
+
+public class ModifierUnlockTechnology extends ModelModifier {
 
     public int mTechnologyIndex;
 
@@ -14,17 +14,17 @@ public class ModifierUnlockTechnology extends IModelModifier {
     }
 
     @Override
-    public void apply(ModelGameState gameState) {
+    public void apply(ModelEpochState gameState) {
 
     }
 
     @Override
-    public void remove(ModelGameState gameState) {
+    public void remove(ModelEpochState gameState) {
 
     }
 
     @Override
-    public String getDescription() {
-        return "Unlock the " + ModelTechnology.getName(mTechnologyIndex) + " industry";
+    public String getDescription(Context context, ModelEpochState gameState) {
+        return "Unlock the " + gameState.mTechnologyMap.get(mTechnologyIndex).getName(context) + " technology";
     }
 }

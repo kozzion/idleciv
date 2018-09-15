@@ -23,7 +23,7 @@
         android:gravity="center">
 
         <ImageView
-            android:id="@+id/item_resource_amount_image_icon"
+            android:id="@+id/item_resource_amount_iv_icon"
             android:layout_width="60dp"
             android:layout_height="60dp" />
         <TextView

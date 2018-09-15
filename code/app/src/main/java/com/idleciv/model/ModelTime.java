@@ -8,14 +8,14 @@ public class ModelTime {
     public static final double YearProgressPerSecondPlay = 10.0;
     public static final double YearProgressPerSecondFast = 40.0;
 
-    public transient ModelGameState mGameState;
+    public transient ModelEpochState mGameState;
     public transient HashSet<TimeListener> mTimeListenerSet;
     public double mYearProgress;
     public double mYearProgressMax;
     public double mYearProgressPerSecond;
 
 
-    public ModelTime(ModelGameState gameState){
+    public ModelTime(ModelEpochState gameState){
         mGameState = gameState;
         mTimeListenerSet = new HashSet<>();
         mYearProgress = 0;
@@ -23,7 +23,7 @@ public class ModelTime {
         mYearProgressPerSecond = YearProgressPerSecondPlay;
     }
 
-    public void validate(ModelGameState gameState) {
+    public void validate(ModelEpochState gameState) {
         mGameState = gameState;
         mTimeListenerSet = new HashSet<>();
     }

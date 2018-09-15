@@ -5,6 +5,7 @@
     <color name="colorAccent">#FF4081</color>
 
     <color name="ICWhite">#ffffff</color>
+    <color name="ICRed">#ff0000</color>
     <color name="ICPastelLight">#f9fafc</color>
     <color name="ICPastelDark">#e7ecf5</color>
     <color name="ICBlack">#000000</color>

@@ -5,13 +5,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.idleciv.R;
-import com.idleciv.activity.ActivityMain;
 import com.idleciv.model.ModelIndustry;
-import com.idleciv.model.ModelResourceStock;
+import com.idleciv.model.ModelResourceAmount;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -22,38 +20,39 @@ import butterknife.ButterKnife;
 
 public class HolderIndustry extends RecyclerView.ViewHolder implements ModelIndustry.Listener {
 
-    @BindView(R.id.item_industry_image_icon)
+    @BindView(R.id.item_industry_iv_icon)
     ImageView mImageIcon;
 
     @BindView(R.id.item_industry_tv_name)
     TextView mTextName;
 
-    @BindView(R.id.item_industry_tv_stock)
-    TextView mTextStock;
+    @BindView(R.id.item_industry_ll_consumption)
+    View mConsumption;
 
-    @BindView(R.id.item_time_tv_progress)
-    TextView mTextProgress;
+    @BindView(R.id.item_industry_ll_production)
+    View mProduction;
 
-    @BindView(R.id.item_industry_progress_progress)
-    ProgressBar mProgressProgress;
-
-    @BindView(R.id.industry_bt_add_pop)
+    @BindView(R.id.item_industry_bt_add_pop)
     Button mAddPop;
 
-    @BindView(R.id.industry_bt_remove_pop)
+    @BindView(R.id.item_industry_bt_remove_pop)
     Button mRemovePop;
 
-    @BindView(R.id.industry_tv_current_pop)
+    @BindView(R.id.item_industry_tv_current_pop)
     TextView mCurrentPop;
 
     private View mRootView;
     private ModelIndustry mIndustry;
 
+    HolderResourceAmountList mHolderConsumption;
+    HolderResourceAmountList mHolderProduction;
+
     public HolderIndustry(View rootView) {
         super(rootView);
         mRootView = rootView;
         ButterKnife.bind(this, itemView);
-        mProgressProgress.setMax(100);
+        mHolderConsumption = new HolderResourceAmountList(mConsumption);
+        mHolderProduction = new HolderResourceAmountList(mProduction);
     }
 
     public void bind(ModelIndustry modelIndustry) {
@@ -85,13 +84,17 @@ public class HolderIndustry extends RecyclerView.ViewHolder implements ModelIndu
 
     @Override
     public void updateIndustryUI() {
-        mTextName.setText(ModelIndustry.getName(mIndustry.mIndustryIndex));
-        //mTextStock.setText(Integer.toString((int)industry.mGameState.mResourceStockMap.get(industry.mResourceIndex).mStock));
+        mTextName.setText(mIndustry.getName(mRootView.getContext()));
+        //mTextStock.setText(Integer.toString((int)industry.mEpochState.mResourceStockMap.get(industry.mResourceIndex).mStock));
         //mTextProgress.setText(Double.toString(industry.mProgress) + " / 100");
         //mProgressProgress.setProgress(industry.mProgress);
-        mImageIcon.setImageResource(ModelIndustry.getIcon(mIndustry.mIndustryIndex));
+        mImageIcon.setImageResource(mIndustry.getIcon());
 
-        mCurrentPop.setText(Integer.toString(mIndustry.mPopulationIndustry));
+        mCurrentPop.setText(Integer.toString(mIndustry.mPopulationCurrent));
+
+
+        mHolderConsumption.bind(ModelResourceAmount.multiply(mIndustry.mConsumptionList, mIndustry.mPopulationCurrent));
+        mHolderProduction.bind(ModelResourceAmount.multiply(mIndustry.mProductionList, mIndustry.mPopulationCurrent));
 
 
     }

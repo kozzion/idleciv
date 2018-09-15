@@ -1,11 +1,12 @@
 package com.idleciv.model.modefier;
 
-import com.idleciv.model.IModelModifier;
-import com.idleciv.model.ModelGameState;
-import com.idleciv.model.ModelIndustry;
+import android.content.Context;
+
+import com.idleciv.model.ModelModifier;
+import com.idleciv.model.ModelEpochState;
 import com.idleciv.model.ModelResourceStock;
 
-public class ModifierUnlockResource extends IModelModifier {
+public class ModifierUnlockResource extends ModelModifier {
 
     public int mResourceIndex;
 
@@ -14,18 +15,18 @@ public class ModifierUnlockResource extends IModelModifier {
     }
 
     @Override
-    public void apply(ModelGameState gameState) {
+    public void apply(ModelEpochState gameState) {
         ModelResourceStock resourceStock = gameState.mResourceStockMap.get(mResourceIndex);
         resourceStock.mIsEnabled = true;
         gameState.updateUI();
     }
 
     @Override
-    public void remove(ModelGameState gameState) {
+    public void remove(ModelEpochState gameState) {
 
     }
 
-    public String getDescription() {
-        return "Unlock the " + ModelResourceStock.getName(mResourceIndex) + " resource";
+    public String getDescription(Context context, ModelEpochState gameState) {
+        return "Unlock the " + gameState.mResourceStockMap.get(mResourceIndex).getName(context) + " resource";
     }
 }

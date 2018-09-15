@@ -1,5 +1,7 @@
 package com.idleciv.model;
 
+import android.widget.TextView;
+
 import java.util.ArrayList;
 
 /**
@@ -17,4 +19,11 @@ public class ModelResourceAmount {
         mAmount = amount;
     }
 
+    public static ArrayList<ModelResourceAmount> multiply(ArrayList<ModelResourceAmount> originalList, int multiplier) {
+        ArrayList<ModelResourceAmount> list = new ArrayList<>();
+        for (ModelResourceAmount amount: originalList) {
+            list.add(new ModelResourceAmount(amount.mResourceIndex, amount.mAmount * multiplier));
+        }
+        return list;
+    }
 }

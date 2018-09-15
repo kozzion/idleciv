@@ -13,38 +13,36 @@ import com.idleciv.model.ModelResourceStock;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-/**
- * Created by jaapo on 8-1-2018.
- */
+public class HolderResourceAmountSmall extends RecyclerView.ViewHolder implements ModelResourceStock.Listener{
 
-public class HolderResourceAmount extends RecyclerView.ViewHolder implements ModelResourceStock.Listener{
-
-    @BindView(R.id.item_resource_amount_image_icon)
+    @BindView(R.id.item_resource_amount_small_iv_icon)
     ImageView mImageIcon;
 
-    @BindView(R.id.item_resource_amount_text_name)
-    TextView mTextName;
+    @BindView(R.id.item_resource_amount_small_tv_amount)
+    TextView mTextAmount;
 
-    @BindView(R.id.item_resource_amount_text_stock)
-    TextView mTextStock;
 
     private View mRootView;
     private ModelResourceAmount mResourceAmount;
     private ModelResourceStock mResourceStock;
 
-    public HolderResourceAmount(View rootView) {
+    public HolderResourceAmountSmall(View rootView) {
         super(rootView);
         mRootView = rootView;
         ButterKnife.bind(this, itemView);
     }
 
     public void bind(ModelResourceAmount resourceAmount) {
+        if(mResourceStock != null) {
+            mResourceStock.removeListener(this);
+        }
         mResourceAmount = resourceAmount;
         //Dirty hack
-        mResourceStock = ((ActivityMain)mRootView.getContext()).mGame.mGameState.mResourceStockMap.get(mResourceAmount.mResourceIndex);
+        mResourceStock = ((ActivityMain)mRootView.getContext()).mGameState.mEpochState.mResourceStockMap.get(mResourceAmount.mResourceIndex);
 
-        mTextName.setText(ModelResourceStock.getName(mResourceAmount.mResourceIndex));
-        mImageIcon.setImageResource(ModelResourceStock.getIcon(mResourceAmount.mResourceIndex));
+        mImageIcon.setImageResource(mResourceStock.getIcon());
+        mTextAmount.setText(Integer.toString(mResourceAmount.mAmount));
+
         mResourceStock.addListener(this);
     }
 
@@ -54,7 +52,8 @@ public class HolderResourceAmount extends RecyclerView.ViewHolder implements Mod
 
     @Override
     public void updateResourceStockUI() {
-        mTextStock.setText(Integer.toString(mResourceStock.mStock) + "/" + Integer.toString(mResourceAmount.mAmount));
-
+        //TODO change color
+        mTextAmount.setText(Integer.toString(mResourceAmount.mAmount));
     }
 }
+

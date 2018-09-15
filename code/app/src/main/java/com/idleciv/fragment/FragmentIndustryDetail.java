@@ -4,10 +4,8 @@ import android.widget.TextView;
 
 import com.idleciv.R;
 import com.idleciv.common.FragmentBase;
-import com.idleciv.model.ModelGame;
-import com.idleciv.model.ModelGameState;
+import com.idleciv.model.ModelEpochState;
 import com.idleciv.model.ModelIndustry;
-import com.idleciv.model.ModelResourceStock;
 
 import butterknife.BindView;
 
@@ -15,7 +13,7 @@ import butterknife.BindView;
  * Created by jaapo on 7-1-2018.
  */
 
-public class FragmentIndustryDetail extends FragmentBase implements ModelGameState.GameStateListener {
+public class FragmentIndustryDetail extends FragmentBase implements ModelEpochState.GameStateListener {
 
     private boolean mIsInitialized = false;
 
@@ -23,7 +21,7 @@ public class FragmentIndustryDetail extends FragmentBase implements ModelGameSta
     TextView mTitle;
 
 
-    ModelGameState mGameState;
+    ModelEpochState mGameState;
     ModelIndustry mIndustry;
 
 
@@ -34,7 +32,7 @@ public class FragmentIndustryDetail extends FragmentBase implements ModelGameSta
 
     public void setIndustry(ModelIndustry industry) {
         this.mIndustry = industry;
-        mTitle.setText(ModelIndustry.getName(mIndustry.mIndustryIndex));
+        mTitle.setText(mIndustry.getName(getContext()));
     }
 
     @Override
@@ -45,7 +43,7 @@ public class FragmentIndustryDetail extends FragmentBase implements ModelGameSta
         mIsInitialized = false;
     }
 
-    public void bind(ModelGameState gameState) {
+    public void bind(ModelEpochState gameState) {
         //Unbind previous
         if (mGameState != null) {
             mGameState.removeListener(this);

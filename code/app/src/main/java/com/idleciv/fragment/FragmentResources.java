@@ -8,19 +8,16 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 
 import com.idleciv.R;
-import com.idleciv.adapter.AdapterIndustry;
 import com.idleciv.adapter.AdapterResourceStock;
 import com.idleciv.common.FragmentBase;
 import com.idleciv.holder.HolderTime;
-import com.idleciv.model.ModelGameState;
+import com.idleciv.model.ModelEpochState;
 
 import butterknife.BindView;
 
-public class FragmentResources extends FragmentBase implements ModelGameState.GameStateListener {
+public class FragmentResources extends FragmentBase implements ModelEpochState.GameStateListener {
 
     private boolean mIsInitialized = false;
 
@@ -33,7 +30,7 @@ public class FragmentResources extends FragmentBase implements ModelGameState.Ga
     private AdapterResourceStock mAdapter;
     private HolderTime mHolderTime;
 
-    public ModelGameState mGameState;
+    public ModelEpochState mGameState;
 
 
     @Override
@@ -51,7 +48,7 @@ public class FragmentResources extends FragmentBase implements ModelGameState.Ga
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         layoutManager.setAutoMeasureEnabled(true);
         mRecycler.setLayoutManager(layoutManager);
-//        mAdapter.setData(mGameState.getEnabledIndustryList());
+//        mAdapter.setData(mEpochState.getEnabledIndustryList());
 
         mHolderTime = new HolderTime(mLayoutTime);
 
@@ -84,7 +81,7 @@ public class FragmentResources extends FragmentBase implements ModelGameState.Ga
         }
     }
 
-    public void bind(ModelGameState gameState) {
+    public void bind(ModelEpochState gameState) {
         Log.e(TAG, "bind");
         //Unbind previous
         if (mGameState != null) {

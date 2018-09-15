@@ -25,11 +25,11 @@ public class HolderResourceStock extends RecyclerView.ViewHolder implements Mode
     @BindView(R.id.item_resource_stock_tv_production)
     TextView mTextProduction;
 
-    @BindView(R.id.item_resource_stock_tv_consumption)
+    @BindView(R.id.item_resource_stock_tv_demand)
     TextView mTextConsumption;
 
-    @BindView(R.id.item_resource_stock_tv_capacity)
-    TextView mTextCapacity;
+    @BindView(R.id.item_resource_stock_tv_stock)
+    TextView mTextStock;
 
     @BindView(R.id.item_resource_stock_pb_capacity)
     ProgressBar mProgressCapacity;
@@ -57,12 +57,12 @@ public class HolderResourceStock extends RecyclerView.ViewHolder implements Mode
 
     @Override
     public void updateResourceStockUI() {
-        mImageIcon.setImageResource(ModelResourceStock.getIcon(mResourceStock.mResourceIndex));
-        mTextName.setText(ModelResourceStock.getName(mResourceStock.mResourceIndex));
-        mTextConsumption.setText("?");
-        mTextProduction.setText("?");
+        mImageIcon.setImageResource(mResourceStock.getIcon());
+        mTextName.setText(mResourceStock.getName(mRootView.getContext()));
+        mTextProduction.setText("+" + Integer.toString(mResourceStock.mProduction));
+        mTextConsumption.setText("-" + Integer.toString(mResourceStock.mDemand));
         mProgressCapacity.setProgress(mResourceStock.mStock);
         mProgressCapacity.setMax(mResourceStock.mCapacity);
-        mTextCapacity.setText(Integer.toString(mResourceStock.mStock) + " / " + Integer.toString(mResourceStock.mCapacity));
+        mTextStock.setText(Integer.toString(mResourceStock.mStock) + " / " + Integer.toString(mResourceStock.mCapacity));
     }
 }

@@ -4,46 +4,48 @@
     android:layout_width="match_parent"
     android:layout_height="100dp"
     android:background="@drawable/background_item_industry"
-    android:layout_margin="5dp"
-    android:padding="5dp">
+    android:layout_marginTop="4dp"
+    android:layout_marginLeft="4dp"
+    android:layout_marginRight="4dp"
+    android:padding="4dp">
 
-    <ImageView
-        android:id="@+id/item_industry_image_icon"
+
+
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="0dp"
         android:layout_weight="1"
-        android:layout_height="wrap_content" />
+        android:layout_height="90dp">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        <TextView
+            android:id="@+id/item_industry_tv_name"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"/>
+
+        <ImageView
+            android:id="@+id/item_industry_iv_icon"
+            android:layout_width="match_parent"
+            android:layout_height="70dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
         android:orientation="vertical"
         android:layout_width="0dp"
         android:layout_weight="3"
         android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/item_industry_tv_name"
+        <include
+            android:id="@+id/item_industry_ll_consumption"
+            layout="@layout/layout_item_resource_amount_small_list"/>
+        
+        <Space
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="10dp" />
 
-        <TextView
-            android:id="@+id/item_industry_tv_stock"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <ProgressBar style="?android:attr/progressBarStyleHorizontal"
-            android:id="@+id/item_industry_progress_progress"
-
-
-            android:progressDrawable="@drawable/custom_progress_bar_horizontal"
-            android:minHeight="10dp"
-            android:maxHeight="20dp"
-
-            android:layout_width="match_parent"
-            android:layout_height="20dp" />
-
-        <TextView
-            android:id="@+id/item_time_tv_progress"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+        <include
+            android:id="@+id/item_industry_ll_production"
+            layout="@layout/layout_item_resource_amount_small_list"/>
     </LinearLayout>
 
 
@@ -58,13 +60,13 @@
             android:layout_width="match_parent"
             android:layout_height="40dp" >
             <Button
-                android:id="@+id/industry_bt_remove_pop"
+                android:id="@+id/item_industry_bt_remove_pop"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:text="-"/>
 
             <Button
-                android:id="@+id/industry_bt_add_pop"
+                android:id="@+id/item_industry_bt_add_pop"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:text="+"/>
@@ -72,7 +74,7 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/industry_tv_current_pop"
+            android:id="@+id/item_industry_tv_current_pop"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:text="0/0"/>

@@ -9,13 +9,12 @@ import android.util.Log;
 import android.view.View;
 
 import com.idleciv.R;
-import com.idleciv.activity.ActivityMain;
 import com.idleciv.adapter.AdapterTechnology;
 import com.idleciv.common.FragmentBase;
 import com.idleciv.holder.HolderTechnologyDetails;
 import com.idleciv.holder.HolderTechnologyItem;
-import com.idleciv.model.ModelGame;
 import com.idleciv.model.ModelGameState;
+import com.idleciv.model.ModelEpochState;
 import com.idleciv.model.ModelTechnology;
 
 import butterknife.BindView;
@@ -24,7 +23,7 @@ import butterknife.BindView;
  * Created by jaapo on 7-1-2018.
  */
 
-public class FragmentTechnology extends FragmentBase implements ModelGameState.GameStateListener, HolderTechnologyItem.TechnologyListener {
+public class FragmentTechnology extends FragmentBase implements ModelEpochState.GameStateListener, HolderTechnologyItem.TechnologyListener {
 
     private boolean mIsInitialized = false;
 
@@ -35,8 +34,8 @@ public class FragmentTechnology extends FragmentBase implements ModelGameState.G
     View mLayoutDetails;
 
     AdapterTechnology mAdapter;
-    ModelGame mGame;
-    ModelGameState mGameState;
+    ModelGameState mGame;
+    ModelEpochState mGameState;
 
     private HolderTechnologyDetails mDetailsHolder;
 
@@ -84,7 +83,7 @@ public class FragmentTechnology extends FragmentBase implements ModelGameState.G
         }
     }
 
-    public void bind(ModelGameState gameState) {
+    public void bind(ModelEpochState gameState) {
         Log.e(TAG, "bind: ");
         //Unbind previous
         if (mGameState != null) {

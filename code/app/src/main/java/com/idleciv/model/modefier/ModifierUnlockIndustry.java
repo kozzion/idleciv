@@ -1,10 +1,12 @@
 package com.idleciv.model.modefier;
 
-import com.idleciv.model.IModelModifier;
-import com.idleciv.model.ModelGameState;
+import android.content.Context;
+
+import com.idleciv.model.ModelModifier;
+import com.idleciv.model.ModelEpochState;
 import com.idleciv.model.ModelIndustry;
 
-public class ModifierUnlockIndustry extends IModelModifier {
+public class ModifierUnlockIndustry extends ModelModifier {
 
     public int mIndustryIndex;
 
@@ -13,18 +15,18 @@ public class ModifierUnlockIndustry extends IModelModifier {
     }
 
     @Override
-    public void apply(ModelGameState gameState) {
+    public void apply(ModelEpochState gameState) {
         ModelIndustry industry = gameState.mIndustryMap.get(mIndustryIndex);
         industry.mIsEnabled = true;
         gameState.updateUI();
     }
 
     @Override
-    public void remove(ModelGameState gameState) {
+    public void remove(ModelEpochState gameState) {
 
     }
 
-    public String getDescription() {
-        return "Unlock the " + ModelIndustry.getName(mIndustryIndex) + " industry";
+    public String getDescription(Context context, ModelEpochState gameState) {
+        return "Unlock the " + gameState.mIndustryMap.get(mIndustryIndex).getName(context) + " industry";
     }
 }

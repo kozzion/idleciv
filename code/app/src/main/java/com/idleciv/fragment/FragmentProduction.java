@@ -7,16 +7,12 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 
 import com.idleciv.R;
-import com.idleciv.activity.ActivityMain;
 import com.idleciv.adapter.AdapterIndustry;
 import com.idleciv.common.FragmentBase;
 import com.idleciv.holder.HolderTime;
-import com.idleciv.model.ModelGame;
-import com.idleciv.model.ModelGameState;
+import com.idleciv.model.ModelEpochState;
 
 import butterknife.BindView;
 
@@ -24,7 +20,7 @@ import butterknife.BindView;
  * Created by jaapo on 7-1-2018.
  */
 
-public class FragmentProduction extends FragmentBase implements ModelGameState.GameStateListener {
+public class FragmentProduction extends FragmentBase implements ModelEpochState.GameStateListener {
 
     private boolean mIsInitialized = false;
 
@@ -34,13 +30,10 @@ public class FragmentProduction extends FragmentBase implements ModelGameState.G
     @BindView(R.id.production_ll_time)
     View mLayoutTime;
 
-    @BindView(R.id.production_tv_population)
-    TextView mPopulation;
-
     private AdapterIndustry mAdapter;
     private HolderTime mHolderTime;
 
-    public ModelGameState mGameState;
+    public ModelEpochState mGameState;
 
 
     @Override
@@ -58,7 +51,7 @@ public class FragmentProduction extends FragmentBase implements ModelGameState.G
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         layoutManager.setAutoMeasureEnabled(true);
         mRecycler.setLayoutManager(layoutManager);
-//        mAdapter.setData(mGameState.getEnabledIndustryList());
+//        mAdapter.setData(mEpochState.getEnabledIndustryList());
 
         mHolderTime = new HolderTime(mLayoutTime);
 
@@ -83,9 +76,6 @@ public class FragmentProduction extends FragmentBase implements ModelGameState.G
         if(mIsInitialized) {
             mHolderTime.bind(mGameState.mTime);
             mAdapter.setData(mGameState.getEnabledIndustryList());
-
-            String population = mGameState.mPopulationFree + "/" + mGameState.mPopulationTotal;
-            mPopulation.setText(population);
         }
     }
 
@@ -95,7 +85,7 @@ public class FragmentProduction extends FragmentBase implements ModelGameState.G
         }
     }
 
-    public void bind(ModelGameState gameState) {
+    public void bind(ModelEpochState gameState) {
         Log.e(TAG, "bind: 0");
         //Unbind previous
         if (mGameState != null) {

@@ -1,10 +1,11 @@
 package com.idleciv.model.modefier;
 
-import com.idleciv.model.IModelModifier;
-import com.idleciv.model.ModelGameState;
-import com.idleciv.model.ModelIndustry;
+import android.content.Context;
 
-public class ModifierAddPercent extends IModelModifier{
+import com.idleciv.model.ModelModifier;
+import com.idleciv.model.ModelEpochState;
+
+public class ModifierAddPercent extends ModelModifier {
 
     int mPercent;
     int mIndustryIndex;
@@ -15,16 +16,16 @@ public class ModifierAddPercent extends IModelModifier{
     }
 
     @Override
-    public void apply(ModelGameState gameState) {
+    public void apply(ModelEpochState gameState) {
 
     }
 
     @Override
-    public void remove(ModelGameState gameState) {
+    public void remove(ModelEpochState gameState) {
 
     }
 
-    public String getDescription() {
-        return "+" + mPercent + "% to " + ModelIndustry.getName(mIndustryIndex) + " production";
+    public String getDescription(Context context, ModelEpochState gameState) {
+        return "+" + mPercent + "% to " + gameState.mIndustryMap.get(mIndustryIndex).getName(context) + " production";
     }
 }

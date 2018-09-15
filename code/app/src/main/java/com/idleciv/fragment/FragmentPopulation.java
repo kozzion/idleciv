@@ -10,11 +10,9 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.idleciv.R;
-import com.idleciv.activity.ActivityMain;
-import com.idleciv.adapter.AdapterResourceAmount;
+import com.idleciv.adapter.AdapterResourceCost;
 import com.idleciv.common.FragmentBase;
-import com.idleciv.model.ModelGame;
-import com.idleciv.model.ModelGameState;
+import com.idleciv.model.ModelEpochState;
 
 import java.util.ArrayList;
 
@@ -24,7 +22,7 @@ import butterknife.BindView;
  * Created by jaapo on 7-1-2018.
  */
 
-public class FragmentPopulation extends FragmentBase implements ModelGameState.GameStateListener {
+public class FragmentPopulation extends FragmentBase implements ModelEpochState.GameStateListener {
 
     private boolean mIsInitialized = false;
 
@@ -37,14 +35,14 @@ public class FragmentPopulation extends FragmentBase implements ModelGameState.G
     @BindView(R.id.population_recycler_cost)
     RecyclerView mRecycler;
 
-    private AdapterResourceAmount mAdapter;
+    private AdapterResourceCost mAdapter;
 
 
-    public ModelGameState mGameState;
+    public ModelEpochState mGameState;
 
     public FragmentPopulation() {
         super();
-        mAdapter = new AdapterResourceAmount(getContext());
+        mAdapter = new AdapterResourceCost(getContext());
     }
 
     @Override
@@ -93,7 +91,7 @@ public class FragmentPopulation extends FragmentBase implements ModelGameState.G
         }
     }
 
-    public void bind(ModelGameState gameState) {
+    public void bind(ModelEpochState gameState) {
         //Unbind previous
         if (mGameState != null) {
             mGameState.removeListener(this);

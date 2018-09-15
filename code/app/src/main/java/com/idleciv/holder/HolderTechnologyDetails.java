@@ -6,7 +6,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.idleciv.R;
-import com.idleciv.model.IModelModifier;
+import com.idleciv.model.ModelModifier;
 import com.idleciv.model.ModelTechnology;
 
 import butterknife.BindView;
@@ -36,13 +36,13 @@ public class HolderTechnologyDetails {
 
     public void bind(ModelTechnology modelIndustry) {
         mTechnology = modelIndustry;
-        mImageIcon.setImageResource(ModelTechnology.getIcon(mTechnology.mTechnologyIndex));
-        mTextName.setText(ModelTechnology.getName(mTechnology.mTechnologyIndex));
+        mImageIcon.setImageResource(mTechnology.getIcon());
+        mTextName.setText(mTechnology.getName(mRootView.getContext()));
         StringBuilder builder = new StringBuilder();
-        builder.append(ModelTechnology.getDescription(mTechnology.mTechnologyIndex));
-        for (IModelModifier modifier: mTechnology.mModifierList) {
+        builder.append(mTechnology.getDescription(mRootView.getContext()));
+        for (ModelModifier modifier: mTechnology.mModifierList) {
             builder.append("\n");
-            builder.append(modifier.getDescription());
+            builder.append(modifier.getDescription(mRootView.getContext(), mTechnology.mEpochState));
         }
         mDescription.setText(builder.toString());
         mResearch.setOnClickListener(v -> {

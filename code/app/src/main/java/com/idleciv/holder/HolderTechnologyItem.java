@@ -40,9 +40,9 @@ public class HolderTechnologyItem extends RecyclerView.ViewHolder {
 
     public void bind(ModelTechnology modelIndustry) {
         mTechnology = modelIndustry;
-        mImageIcon.setImageResource(ModelTechnology.getIcon(mTechnology.mTechnologyIndex));
-        mTextName.setText(ModelTechnology.getName(mTechnology.mTechnologyIndex));
-        mDescription.setText(ModelTechnology.getDescription(mTechnology.mTechnologyIndex));
+        mImageIcon.setImageResource(mTechnology.getIcon());
+        mTextName.setText(mTechnology.getName(mRootView.getContext()));
+        mDescription.setText(mTechnology.getDescription(mRootView.getContext()));
         mRootView.setOnClickListener(v -> {
             mListener.setTechnology(mTechnology);
         });
